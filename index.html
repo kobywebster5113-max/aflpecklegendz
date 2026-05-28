@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>AFL Pack Legends - Back Reveal Fixed</title>
+<title>AFL Pack Legends - Turbo Boss Fixed Reset</title>
 <style>
 :root{--bg:#07140b;--panel:#101827;--line:rgba(255,255,255,.11);--text:#f8fafc;--muted:#94a3b8;--accent:#22c55e;--good:#22c55e;--bad:#ef4444}
 *{box-sizing:border-box}
@@ -184,8 +184,20 @@ window.addEventListener('error', function(e){
 <div id="openModal" class="modal"><div class="openStage" id="openStage"><div class="burst" id="burst"></div><h2 id="openTitle">Slice the pack</h2><p id="openHint" class="hint">Hold your mouse or finger and drag across the top line.</p><div class="revealTrack" id="revealTrack"></div><div class="sliceWrap"><div id="bigPack" class="bigPack"><div class="tear"></div><div id="packLabel" class="packLabel">BASE PACK</div><div class="sliceLine"><div id="sliceFill" class="sliceFill"></div></div></div><div id="wrapperCard" class="wrapperCard"><div id="flipCard" class="flipCard"><div class="cardBack"><div class="backLogo">🏉</div></div><div id="cardFace" class="cardFace"></div></div></div></div><button id="nextReveal" style="display:none" onclick="nextPackCard()">Next Card</button><button id="closeOpen" style="display:none" onclick="closeOpenModal()">Claim All Cards</button></div></div>
 <div id="resetModal" class="modal"><div class="confirmBox"><h2>Are you sure?</h2><p class="hint">This will delete your local save and put you back to $0 with no cards.</p><div class="row"><button class="danger" onclick="resetGame()">Yes, Reset</button><button class="ghost" onclick="document.getElementById('resetModal').classList.remove('active')">Cancel</button></div></div></div><div id="toast" class="toast"></div>
 <script>
-const SAVE_KEY='afl_pack_legends_save_v1';
-const OLD_KEYS=['hoop_pack_legends_save_v3','hoop_pack_legends_save_v2','hoop_pack_legends_save_v1'];
+const SAVE_KEY='afl_pack_legends_save_v2_turbo_fixed';
+const OLD_KEYS=['afl_pack_legends_save_v1','afl_pack_legends_save_v2','hoop_pack_legends_save_v3','hoop_pack_legends_save_v2','hoop_pack_legends_save_v1'];
+const TURBO_FIX_RESET_KEY='afl_turbo_boss_fixed_reset_done_v1';
+(function hardResetBrokenTurboSaveOnce(){
+  try{
+    if(localStorage.getItem(TURBO_FIX_RESET_KEY)!=='yes'){
+      Object.keys(localStorage).forEach(k=>{
+        const low=k.toLowerCase();
+        if(low.includes('afl_pack_legends')||low.includes('pack_legends')||low.includes('hoop_pack')) localStorage.removeItem(k);
+      });
+      localStorage.setItem(TURBO_FIX_RESET_KEY,'yes');
+    }
+  }catch(e){}
+})();
 const MAX_EQUIP=8;
 const upgradeMult=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5];
 const upgradeCostMult=[0,0.6,1.2,2.2,3.6,5.5,8,12,18,27,40,60,90,135,200,300];
@@ -519,7 +531,7 @@ function renderLegend(){const el=document.getElementById('rarityLegend');if(!el|
 function updateTop(){const p=getPower();document.getElementById('moneyText').textContent=money(state.money);document.getElementById('incomeText').textContent=money(getIncome())+'/s';document.getElementById('powerText').textContent=p;document.getElementById('homePower').textContent=p;document.getElementById('cardsText').textContent=getOwnedCount()}
 function renderAll(){updateTop();renderLegend();renderPacks();renderEquip();renderCollection()}
 function saveGame(manual){state.lastSave=Date.now();localStorage.setItem(SAVE_KEY,JSON.stringify(state));if(manual)toast('Game saved.')}
-function loadGame(manual){let raw=localStorage.getItem(SAVE_KEY);if(!raw){if(manual)toast('No AFL save found.');return}try{const d=JSON.parse(raw);state={money:+d.money||0,owned:d.owned||{},sellBank:d.sellBank||{},upgrades:d.upgrades||{},equipped:Array.isArray(d.equipped)?d.equipped.slice(0,MAX_EQUIP):[],lastSave:d.lastSave||Date.now()};state.equipped=state.equipped.filter(id=>cards.some(c=>c.id===id)&&(state.owned[id]||0)>0);renderAll();if(manual)toast('Game loaded.')}catch(e){toast('Save was broken.')}}
+function loadGame(manual){let raw=localStorage.getItem(SAVE_KEY);if(!raw){if(manual)toast('No AFL save found.');return}try{const d=JSON.parse(raw);const owned=d.owned||{};const turboIds=cards.filter(c=>c.rarity==='turboboss').map(c=>c.id);const turboOwned=turboIds.reduce((s,id)=>s+(+owned[id]||0),0);const totalOwned=Object.values(owned).reduce((s,v)=>s+(+v||0),0);if(turboOwned>=3||totalOwned>50000){localStorage.removeItem(SAVE_KEY);state={money:0,owned:{},sellBank:{},upgrades:{},equipped:[],lastSave:Date.now()};renderAll();toast('Broken save wiped.');return}state={money:+d.money||0,owned:owned,sellBank:d.sellBank||{},upgrades:d.upgrades||{},equipped:Array.isArray(d.equipped)?d.equipped.slice(0,MAX_EQUIP):[],lastSave:d.lastSave||Date.now()};state.equipped=state.equipped.filter(id=>cards.some(c=>c.id===id)&&(state.owned[id]||0)>0);renderAll();if(manual)toast('Game loaded.')}catch(e){toast('Save was broken.')}}
 function openResetConfirm(){document.getElementById('resetModal').classList.add('active')}
 function resetGame(){state={money:0,owned:{},sellBank:{},upgrades:{},equipped:[],lastSave:Date.now()};Object.keys(localStorage).forEach(k=>{if(k.toLowerCase().includes('afl')||k.toLowerCase().includes('pack_legends')||k.toLowerCase().includes('hoop_pack')||k===SAVE_KEY)localStorage.removeItem(k)});document.getElementById('openModal').classList.remove('active');document.getElementById('resetModal').classList.remove('active');pendingCards=[];revealIndex=0;renderAll();saveGame(false);toast('Everything reset.')}
 setInterval(()=>{state.money+=getIncome()/10;updateTop()},100);setInterval(()=>saveGame(false),10000);loadGame(false);renderAll();

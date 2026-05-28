@@ -1,0 +1,431 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>AFL Pack Legends - Back Reveal Fixed</title>
+<style>
+:root{--bg:#07140b;--panel:#101827;--line:rgba(255,255,255,.11);--text:#f8fafc;--muted:#94a3b8;--accent:#22c55e;--good:#22c55e;--bad:#ef4444}
+*{box-sizing:border-box}
+body{margin:0;min-height:100vh;font-family:Inter,system-ui,Segoe UI,Arial,sans-serif;color:var(--text);background:radial-gradient(circle at 12% 15%,rgba(34,197,94,.32),transparent 32%),radial-gradient(circle at 85% 5%,rgba(250,204,21,.22),transparent 32%),linear-gradient(135deg,#020617,#0f172a 55%,#052e16);overflow-x:hidden}
+button{border:0;cursor:pointer;color:white;background:linear-gradient(135deg,#16a34a,#facc15);border-radius:16px;padding:11px 15px;font-weight:900;box-shadow:0 14px 30px rgba(0,0,0,.28);transition:.15s transform,.15s filter,.15s opacity}
+button:hover{transform:translateY(-2px);filter:brightness(1.08)}
+button:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
+.ghost{background:#243044}.danger{background:linear-gradient(135deg,#dc2626,#fb7185)}.good{background:linear-gradient(135deg,#16a34a,#22c55e)}.tiny{font-size:12px;padding:7px 10px;border-radius:11px}
+.app{max-width:1380px;margin:auto;padding:18px}
+.shell{display:grid;grid-template-columns:235px 1fr;gap:16px}
+.sidebar{position:sticky;top:18px;height:calc(100vh - 36px);background:rgba(15,23,42,.9);border:1px solid var(--line);border-radius:28px;padding:16px;box-shadow:0 25px 70px rgba(0,0,0,.38);display:flex;flex-direction:column}
+.brand{padding:10px 8px 18px}.brand h1{font-size:26px;line-height:1;margin:0}.brand p{margin:8px 0 0;color:var(--muted);font-size:13px}
+.nav{display:grid;gap:9px}.nav button{text-align:left;background:#151f31;border:1px solid var(--line);box-shadow:none}.nav button.active{background:linear-gradient(135deg,#16a34a,#facc15);color:#07111f}
+.sideStats{margin-top:auto;display:grid;gap:9px}.stat{background:#0b1220;border:1px solid var(--line);padding:10px 12px;border-radius:17px}.stat b{display:block;font-size:19px}.stat span{font-size:12px;color:var(--muted)}
+.screen{display:none}.screen.active{display:block}
+.hero{min-height:430px;border:1px solid var(--line);border-radius:34px;overflow:hidden;position:relative;background:linear-gradient(135deg,rgba(34,197,94,.22),rgba(15,23,42,.9)),url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="900" height="500"><rect width="900" height="500" fill="%23071722"/><g opacity=".30" stroke="%23ffffff" stroke-width="5" fill="none"><ellipse cx="450" cy="250" rx="350" ry="190"/><path d="M100 250h700M450 60v380"/><circle cx="450" cy="250" r="58"/><path d="M150 165c70 55 70 115 0 170M750 165c-70 55-70 115 0 170"/><rect x="70" y="205" width="55" height="90"/><rect x="775" y="205" width="55" height="90"/></g></svg>') center/cover;box-shadow:0 28px 80px rgba(0,0,0,.38);padding:28px;display:grid;grid-template-columns:1.1fr .9fr;gap:20px;align-items:center}
+.hero h2{font-size:54px;line-height:.95;margin:0 0 12px;letter-spacing:-2px}.hero p{color:#dbeafe;max-width:560px;font-size:16px;line-height:1.5}
+.heroCard{background:rgba(2,6,23,.72);border:1px solid var(--line);border-radius:28px;padding:18px;backdrop-filter:blur(8px)}
+.powerCircle{height:210px;border-radius:26px;background:radial-gradient(circle at 50% 42%,rgba(250,204,21,.22),transparent 34%),linear-gradient(135deg,#172033,#0b1220);display:grid;place-items:center;text-align:center}.powerCircle b{font-size:58px}.powerCircle span{display:block;color:var(--muted)}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(245px,1fr));gap:14px}
+.panel{background:rgba(15,23,42,.88);border:1px solid var(--line);border-radius:26px;padding:16px;box-shadow:0 18px 50px rgba(0,0,0,.32)}
+.panel h2,.panel h3{margin:0 0 10px}.hint{color:var(--muted);font-size:14px;line-height:1.45}
+.sectionTitle{display:flex;justify-content:space-between;gap:12px;align-items:end;margin:0 0 14px}.sectionTitle h2{font-size:30px;margin:0}
+.pack{position:relative;min-height:290px;overflow:hidden}.pack:before{content:"";position:absolute;inset:-40%;background:conic-gradient(transparent,rgba(255,255,255,.18),transparent);animation:spin 8s linear infinite;opacity:.22}@keyframes spin{to{transform:rotate(360deg)}}
+.packInner{position:relative;z-index:1;display:flex;flex-direction:column;gap:9px;height:100%}
+.packArt{height:145px;border-radius:22px;display:grid;place-items:center;text-align:center;font-weight:1000;font-size:22px;letter-spacing:.5px;border:1px solid var(--line);position:relative;overflow:hidden;color:#07111f}.packArt small{display:block;font-size:12px;letter-spacing:2px;margin-top:4px;opacity:.75}.packArt:after{content:"";position:absolute;left:-30%;top:-20%;height:150%;width:38%;background:rgba(255,255,255,.25);transform:rotate(18deg)}
+.price{font-size:20px;font-weight:1000}.odds{font-size:12px;color:#cbd5e1;line-height:1.35}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(178px,1fr));gap:12px}
+.card{position:relative;background:linear-gradient(145deg,#1e293b,#0f172a);border:1px solid var(--line);border-radius:22px;padding:10px;min-height:322px;overflow:hidden;box-shadow:0 16px 35px rgba(0,0,0,.28);transform-style:preserve-3d}
+.card.locked{filter:grayscale(1);opacity:.45}
+.shine{position:absolute;inset:-80%;background:linear-gradient(115deg,transparent 40%,rgba(255,255,255,.24),transparent 60%);transform:rotate(15deg);animation:shine 4s infinite;pointer-events:none}@keyframes shine{0%{translate:-40% 0}55%,100%{translate:40% 0}}
+.rarityTag{display:inline-block;font-size:11px;font-weight:1000;padding:5px 8px;border-radius:999px;color:#07111f;margin-bottom:8px}.rating{position:absolute;right:10px;top:10px;background:#f8fafc;color:#07111f;border-radius:13px;padding:5px 8px;font-weight:1000;font-size:18px;z-index:3;pointer-events:none}.rating small{display:block;font-size:9px;line-height:.8}
+.playerArt{height:140px;border-radius:18px;margin-bottom:9px;background:radial-gradient(circle at 50% 20%,rgba(255,255,255,.28),transparent 38%),linear-gradient(135deg,#064e3b,#0b1220);display:grid;place-items:center;position:relative;overflow:hidden}
+.playerArt:before{content:"";position:absolute;left:9px;right:9px;bottom:10px;height:52px;border:2px solid rgba(255,255,255,.18);border-radius:50%;transform:scaleX(1.3)}
+.playerArt:after{content:"";position:absolute;left:50%;bottom:22px;width:42px;height:42px;border:2px solid rgba(255,255,255,.18);border-radius:50%;transform:translateX(-50%)}
+.avatar{width:122px;height:136px;position:relative;filter:drop-shadow(0 12px 12px rgba(0,0,0,.35))}
+.neck{position:absolute;left:50px;top:49px;width:25px;height:21px;background:var(--skin);border-radius:4px;box-shadow:inset -4px 0 0 rgba(0,0,0,.12)}
+.head{position:absolute;left:39px;top:14px;width:46px;height:47px;border-radius:48% 48% 45% 45%;background:var(--skin);border:3px solid rgba(0,0,0,.2);z-index:3;box-shadow:inset -7px -8px 0 rgba(0,0,0,.12),inset 5px 4px 0 rgba(255,255,255,.12)}
+.ear{position:absolute;top:31px;width:9px;height:15px;background:var(--skin);border-radius:50%;z-index:2}.ear.l{left:34px}.ear.r{right:34px}
+.eye{position:absolute;top:34px;width:6px;height:5px;border-radius:50%;background:#111;z-index:4}.eye.l{left:53px}.eye.r{right:53px}.nose{position:absolute;left:61px;top:39px;width:5px;height:10px;border-radius:999px;background:rgba(0,0,0,.18);z-index:4}
+.brow{position:absolute;top:28px;width:14px;height:4px;background:var(--hair);border-radius:999px;z-index:4}.brow.l{left:48px;transform:rotate(-8deg)}.brow.r{right:48px;transform:rotate(8deg)}.mouth{position:absolute;left:55px;top:50px;width:15px;height:5px;border-bottom:2px solid rgba(0,0,0,.45);border-radius:50%;z-index:4}
+.hairBase{position:absolute;left:35px;top:4px;width:56px;height:29px;background:var(--hair);border-radius:50% 50% 35% 35%;z-index:4;box-shadow:inset 0 -5px 0 rgba(255,255,255,.06)}.hair.short{height:18px;top:7px}.hair.buzz{height:13px;top:10px;border-radius:50%}.hair.bald{height:8px;top:13px;opacity:.55}.hair.curls{background:transparent}.hair.curls:before{content:"";position:absolute;left:0;top:0;width:54px;height:24px;background:radial-gradient(circle at 8px 12px,var(--hair) 0 7px,transparent 8px),radial-gradient(circle at 20px 7px,var(--hair) 0 8px,transparent 9px),radial-gradient(circle at 34px 9px,var(--hair) 0 8px,transparent 9px),radial-gradient(circle at 47px 13px,var(--hair) 0 7px,transparent 8px)}.hair.long{height:40px;top:3px;border-radius:22px 22px 12px 12px}.hair.headband{height:16px}.hair.headband:after{content:"";position:absolute;left:-2px;right:-2px;bottom:-7px;height:7px;background:#f8fafc;border-radius:999px}
+.beard{position:absolute;left:39px;top:42px;width:38px;height:20px;background:var(--hair);border-radius:0 0 18px 18px;z-index:3;opacity:.95}.beard.goatee{left:50px;top:48px;width:15px;height:12px;border-radius:0 0 9px 9px}.mo{position:absolute;left:50px;top:45px;width:22px;height:5px;background:var(--hair);border-radius:999px;z-index:5}
+.body{position:absolute;left:29px;top:66px;width:68px;height:62px;background:var(--jersey);clip-path:polygon(18% 0,82% 0,100% 100%,0 100%);border-radius:12px;z-index:2;box-shadow:inset 0 0 0 3px rgba(255,255,255,.18),inset -10px -10px 0 rgba(0,0,0,.12)}.body:before{content:"";position:absolute;left:10px;right:10px;top:7px;height:6px;background:rgba(255,255,255,.35);border-radius:999px}.body:after{content:attr(data-no);position:absolute;inset:18px 0 0;text-align:center;color:white;font-weight:1000;font-size:23px;text-shadow:0 2px 5px rgba(0,0,0,.4)}
+.arm{position:absolute;top:72px;width:20px;height:54px;background:var(--skin);border-radius:999px;z-index:1;box-shadow:inset -4px -4px 0 rgba(0,0,0,.12)}.arm.l{left:11px;transform:rotate(18deg)}.arm.r{right:11px;transform:rotate(-18deg)}.shorts{position:absolute;left:36px;top:118px;width:54px;height:18px;background:#111827;border-radius:0 0 10px 10px;z-index:2}.shoe{position:absolute;top:130px;width:26px;height:9px;background:#f8fafc;border-radius:999px;z-index:3}.shoe.l{left:33px}.shoe.r{right:33px}
+.footy{position:absolute;right:1px;top:43px;width:34px;height:23px;border-radius:50%;background:#b45309;border:2px solid #7c2d12;box-shadow:inset 0 0 0 2px rgba(0,0,0,.15);z-index:5;transform:rotate(-20deg)}.footy:after{content:"";position:absolute;left:10px;right:10px;top:9px;height:3px;background:#fff;border-radius:999px;box-shadow:0 -5px 0 rgba(255,255,255,.8),0 5px 0 rgba(255,255,255,.8)}
+.name{font-weight:1000;font-size:15px}.income{font-size:13px;color:#dbeafe;margin:5px 0}.owned{font-size:12px;color:var(--muted)}.cardActions{display:flex;gap:7px;margin-top:9px;flex-wrap:wrap}.cardActions button{flex:1;min-width:67px}.upgradePanel{display:none;margin-top:9px;border:1px solid var(--line);border-radius:14px;padding:9px;background:#0b1220}.upgradePanel.open{display:block}.upgradePanel button{width:100%;margin-top:8px}
+.slots{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px}.slot{min-height:115px;border:1px dashed rgba(255,255,255,.25);border-radius:19px;padding:10px;background:#0b1220}.slot b{font-size:13px}.slot small{display:block;color:var(--muted);margin-top:4px}
+.filters{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}.filters button.active{background:linear-gradient(135deg,#38bdf8,#818cf8)}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.78);display:none;align-items:center;justify-content:center;z-index:50;padding:20px}.modal.active{display:flex}
+.openStage{width:min(760px,96vw);min-height:710px;background:radial-gradient(circle at 50% 0,rgba(34,197,94,.25),transparent 35%),linear-gradient(145deg,#111827,#020617);border:1px solid rgba(255,255,255,.14);border-radius:34px;padding:18px;text-align:center;position:relative;overflow:hidden;box-shadow:0 35px 95px rgba(0,0,0,.72)}
+.sliceWrap{width:340px;height:420px;margin:18px auto 10px;position:relative;perspective:900px}.bigPack{position:absolute;inset:0;border-radius:30px;box-shadow:0 30px 70px rgba(34,197,94,.35);display:grid;place-items:center;color:#07111f;font-size:42px;font-weight:1000;overflow:hidden;user-select:none}.packLabel{text-align:center;line-height:1}.packLabel small{display:block;font-size:13px;letter-spacing:2px;opacity:.7;margin-top:6px}.sliceLine{position:absolute;left:28px;right:28px;top:82px;height:12px;border-radius:999px;background:rgba(2,6,23,.28);overflow:hidden}.sliceFill{height:100%;width:0;background:white;box-shadow:0 0 22px white}.tear{position:absolute;left:0;right:0;top:0;height:105px;background:rgba(255,255,255,.16);border-radius:30px 30px 10px 10px;transform-origin:top;transition:.7s transform,.7s opacity;z-index:3}.bigPack.opened .tear{transform:translateY(-150px) rotateX(75deg);opacity:0}
+.wrapperCard{position:absolute;left:26px;right:26px;bottom:20px;height:300px;transform:translateY(175px) scale(.94);opacity:0;transition:.52s cubic-bezier(.2,1.18,.24,1);z-index:4}.wrapperCard.out{transform:translateY(-20px) scale(1);opacity:1}.flipCard{width:100%;height:100%;transform-style:preserve-3d;transition:.48s cubic-bezier(.2,.9,.25,1.15) transform}.flipCard.flipped{transform:rotateY(180deg)}.cardBack,.cardFace{position:absolute;inset:0;backface-visibility:hidden;-webkit-backface-visibility:hidden;border-radius:24px}.cardBack{background:radial-gradient(circle at 50% 38%,rgba(255,255,255,.18),transparent 32%),linear-gradient(135deg,#064e3b,#0f172a 55%,#334155);border:2px solid rgba(255,255,255,.22);display:grid;place-items:center;font-size:48px;box-shadow:inset 0 0 34px rgba(255,255,255,.08)}.cardBack:before{content:'AFL LEGENDS';position:absolute;bottom:24px;left:0;right:0;font-size:13px;letter-spacing:2px;font-weight:1000;color:rgba(255,255,255,.72)}.cardBack .backLogo{position:absolute;inset:16px;border-radius:20px;border:2px solid rgba(255,255,255,.18);display:grid;place-items:center;font-size:64px;background:radial-gradient(circle at 50% 35%,rgba(255,255,255,.15),transparent 38%)}.cardBack .backLogo:after{content:'';position:absolute;inset:22px;border-radius:16px;border:1px solid rgba(255,255,255,.13)}.cardFace{transform:rotateY(180deg)}
+.revealTrack{display:flex;gap:7px;justify-content:center;margin:6px 0 0}.dot{width:38px;height:8px;background:#334155;border-radius:999px}.dot.done{background:#22c55e}.dot.now{background:#facc15}
+.burst{position:absolute;inset:0;pointer-events:none;overflow:hidden}.spark{position:absolute;width:8px;height:8px;border-radius:99px;background:white;animation:pop 1s forwards}@keyframes pop{to{transform:translate(var(--x),var(--y)) scale(0);opacity:0}}
+.screenFlash{animation:flash .5s 2}@keyframes flash{50%{filter:brightness(1.8) saturate(1.5)}}.shake{animation:shake .65s both}@keyframes shake{10%,90%{transform:translateX(-2px)}20%,80%{transform:translateX(4px)}30%,50%,70%{transform:translateX(-8px)}40%,60%{transform:translateX(8px)}}.legendaryPull{animation:legendaryGlow 1.15s both}@keyframes legendaryGlow{0%{box-shadow:0 0 0 transparent}50%{box-shadow:0 0 70px var(--pullColor), inset 0 0 30px var(--pullColor)}100%{box-shadow:0 0 25px var(--pullColor)}}
+
+.cardBack{position:absolute;overflow:hidden}.cardBack:after{content:"";position:absolute;inset:-60%;background:radial-gradient(circle,var(--pullColor,rgba(255,255,255,.6)),transparent 40%);opacity:0;transform:scale(.45);pointer-events:none}.flipCard.teaseSmall .cardBack:after{animation:backPulse .32s ease}.flipCard.teaseRare .cardBack:after{animation:backPulse .48s ease 2}.flipCard.teaseRare{animation:preRareShake .42s ease both}.flipCard.teaseEpic{animation:preEpicShake .62s ease both}.flipCard.teaseHuge{animation:preHugeShake .82s ease both}.flipCard.teaseOne{animation:preOneShake 1s ease both}.flipCard.flipped{transform:rotateY(180deg)!important}.openStage.preGlow{box-shadow:0 0 52px var(--pullColor),inset 0 0 32px var(--pullGlow)}.openStage.revealBoom{animation:revealBoom .58s ease both}.wrapperCard.cardExit{transform:translateY(-420px) scale(.78) rotate(-6deg)!important;opacity:0!important;transition:.20s ease!important}.flipCard.revealShake{animation:revealShake .36s ease both}.spotlight{position:absolute;left:50%;top:-90px;width:310px;height:520px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 18%,rgba(255,255,255,.38),var(--pullColor),transparent 60%);clip-path:polygon(42% 0,58% 0,100% 100%,0 100%);opacity:0;mix-blend-mode:screen;filter:blur(2px);pointer-events:none;animation:spotlightOn .9s ease forwards}.arcBolt{position:absolute;width:3px;height:86px;background:linear-gradient(180deg,transparent,#fff,var(--pullColor),transparent);left:50%;top:15%;filter:drop-shadow(0 0 13px var(--pullColor));transform:rotate(var(--rot)) translate(var(--dist));animation:boltZap .48s forwards;opacity:.95}.shockwave{position:absolute;left:50%;top:45%;width:30px;height:30px;border:2px solid var(--pullColor);border-radius:50%;transform:translate(-50%,-50%);animation:shock .68s ease-out forwards;filter:drop-shadow(0 0 14px var(--pullColor))}.confettiShard{position:absolute;left:50%;top:45%;width:9px;height:18px;background:var(--pullColor);border-radius:3px;box-shadow:0 0 12px var(--pullColor);animation:shardPop .82s ease-out forwards}@keyframes spotlightOn{0%{opacity:0;transform:translateX(-50%) scaleY(.4)}40%{opacity:.42}100%{opacity:0;transform:translateX(-50%) scaleY(1.08)}}@keyframes backPulse{0%{opacity:0;transform:scale(.3)}48%{opacity:.78;transform:scale(1)}100%{opacity:0;transform:scale(1.4)}}@keyframes preRareShake{0%,100%{transform:translateX(0)}30%{transform:translateX(-3px)}60%{transform:translateX(3px)}}@keyframes preEpicShake{0%,100%{transform:translate(0,0) rotate(0)}18%{transform:translate(-5px,1px) rotate(-1deg)}36%{transform:translate(5px,-1px) rotate(1deg)}54%{transform:translate(-6px,0) rotate(-1.5deg)}72%{transform:translate(6px,1px) rotate(1.5deg)}}@keyframes preHugeShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}12%{transform:translate(-8px,2px) rotate(-2deg) scale(1.01)}24%{transform:translate(8px,-2px) rotate(2deg)}36%{transform:translate(-12px,1px) rotate(-3deg) scale(1.02)}48%{transform:translate(12px,-1px) rotate(3deg)}60%{transform:translate(-8px,2px) rotate(-2deg)}72%{transform:translate(8px,-2px) rotate(2deg)}}@keyframes preOneShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}10%{transform:translate(-12px,3px) rotate(-3deg) scale(1.02)}20%{transform:translate(12px,-3px) rotate(3deg)}30%{transform:translate(-15px,2px) rotate(-4deg) scale(1.035)}40%{transform:translate(15px,-2px) rotate(4deg)}50%{transform:translate(-10px,3px) rotate(-3deg)}60%{transform:translate(10px,-3px) rotate(3deg)}75%{transform:scale(1.05)}90%{transform:scale(1.02)}}@keyframes revealBoom{0%{filter:brightness(1)}42%{filter:brightness(2.15) saturate(2)}100%{filter:brightness(1)}}@keyframes revealShake{0%,100%{transform:rotateY(180deg)}20%{transform:rotateY(180deg) translateX(-6px)}40%{transform:rotateY(180deg) translateX(6px)}60%{transform:rotateY(180deg) translateX(-4px)}80%{transform:rotateY(180deg) translateX(4px)}}@keyframes boltZap{to{opacity:0;transform:rotate(var(--rot)) translate(var(--dist)) scaleY(.25)}}@keyframes shock{to{width:560px;height:560px;opacity:0}}@keyframes shardPop{to{transform:translate(var(--x),var(--y)) rotate(var(--rot));opacity:0}}
+.toast{position:fixed;right:16px;bottom:16px;background:#0b1220;border:1px solid var(--line);padding:12px 14px;border-radius:16px;box-shadow:0 14px 35px rgba(0,0,0,.4);display:none;z-index:70}.toast.show{display:block;animation:fadeToast 2s forwards}@keyframes fadeToast{0%,75%{opacity:1;transform:translateY(0)}100%{opacity:0;transform:translateY(12px)}}.confirmBox{width:min(430px,92vw);background:#111827;border:1px solid var(--line);border-radius:24px;padding:18px;text-align:center}.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}.row>*{flex:1}.smallText{font-size:12px;color:var(--muted)}
+@media(max-width:850px){.shell{grid-template-columns:1fr}.sidebar{position:relative;height:auto}.sideStats{grid-template-columns:repeat(3,1fr);margin-top:14px}.hero{grid-template-columns:1fr}.hero h2{font-size:40px}}
+@media(max-width:560px){.sideStats{grid-template-columns:1fr}.cards{grid-template-columns:repeat(auto-fill,minmax(150px,1fr))}.hero{padding:20px}.hero h2{font-size:34px}.sliceWrap{width:300px}}
+
+/* stronger rarity reveal system */
+.flipCard.teaseRare{animation:preRareShake .85s ease-in-out both!important}
+.flipCard.teaseEpic{animation:preEpicShake 1.15s ease-in-out both!important}
+.flipCard.teaseHuge{animation:preHugeShake 2.05s ease-in-out both!important}
+.flipCard.teaseOne{animation:preOneShake 2.75s ease-in-out both!important}
+.cardBack.electric:before,.cardBack.electric:after{filter:drop-shadow(0 0 16px var(--pullColor))}
+.rarityAura{position:absolute;inset:0;pointer-events:none;opacity:0;animation:auraCharge var(--auraTime,1.3s) ease-in-out forwards;background:radial-gradient(circle at 50% 50%,var(--pullColor),transparent 38%),conic-gradient(from 0deg,transparent,var(--pullColor),transparent,#fff,transparent);mix-blend-mode:screen;filter:blur(7px)}
+.electricCrawler{position:absolute;left:50%;top:50%;width:4px;height:130px;background:linear-gradient(180deg,transparent,#fff,var(--pullColor),transparent);border-radius:999px;filter:drop-shadow(0 0 14px var(--pullColor));transform-origin:50% 0;animation:electricCrawler var(--zapTime,.9s) ease-out forwards}
+.megaSpot{position:absolute;left:50%;top:-140px;width:420px;height:660px;transform:translateX(-50%);background:radial-gradient(ellipse at 50% 12%,#fff,var(--pullColor) 18%,transparent 62%);clip-path:polygon(46% 0,54% 0,100% 100%,0 100%);opacity:0;mix-blend-mode:screen;filter:blur(2px);animation:megaSpot var(--spotTime,2s) ease-in-out forwards;pointer-events:none}
+@keyframes auraCharge{0%{opacity:0;transform:scale(.3) rotate(0deg)}35%{opacity:.45}70%{opacity:.72;transform:scale(1.05) rotate(150deg)}100%{opacity:0;transform:scale(1.35) rotate(260deg)}}
+@keyframes electricCrawler{0%{opacity:0;transform:rotate(var(--rot)) translateY(-75px) scaleY(.2)}20%{opacity:1}100%{opacity:0;transform:rotate(var(--rot)) translateY(var(--dist)) scaleY(.08)}}
+@keyframes megaSpot{0%{opacity:0;transform:translateX(-50%) scaleY(.25)}18%{opacity:.18}55%{opacity:.62}100%{opacity:0;transform:translateX(-50%) scaleY(1.1)}}
+@keyframes preRareShake{0%,100%{transform:translateX(0)}18%{transform:translateX(-3px)}36%{transform:translateX(3px)}54%{transform:translateX(-4px)}72%{transform:translateX(4px)}}
+@keyframes preEpicShake{0%,100%{transform:translate(0,0) rotate(0)}12%{transform:translate(-5px,1px) rotate(-1deg)}24%{transform:translate(5px,-1px) rotate(1deg)}36%{transform:translate(-7px,0) rotate(-1.8deg)}48%{transform:translate(7px,1px) rotate(1.8deg)}60%{transform:translate(-5px,-1px) rotate(-1deg)}72%{transform:translate(5px,1px) rotate(1deg)}}
+@keyframes preHugeShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}8%{transform:translate(-8px,2px) rotate(-2deg) scale(1.01)}16%{transform:translate(8px,-2px) rotate(2deg)}24%{transform:translate(-12px,1px) rotate(-3deg) scale(1.02)}32%{transform:translate(12px,-1px) rotate(3deg)}40%{transform:translate(-16px,3px) rotate(-4deg) scale(1.035)}48%{transform:translate(16px,-3px) rotate(4deg)}58%{transform:translate(-10px,2px) rotate(-2.5deg)}68%{transform:translate(10px,-2px) rotate(2.5deg)}82%{transform:scale(1.04)}}
+@keyframes preOneShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}6%{transform:translate(-12px,3px) rotate(-3deg) scale(1.02)}12%{transform:translate(12px,-3px) rotate(3deg)}18%{transform:translate(-18px,2px) rotate(-4deg) scale(1.04)}24%{transform:translate(18px,-2px) rotate(4deg)}30%{transform:translate(-22px,4px) rotate(-5deg) scale(1.055)}36%{transform:translate(22px,-4px) rotate(5deg)}44%{transform:translate(-16px,3px) rotate(-4deg)}52%{transform:translate(16px,-3px) rotate(4deg)}64%{transform:scale(1.08)}78%{transform:scale(1.03)}}
+
+</style>
+
+<script>
+window.addEventListener('error', function(e){
+  document.body && (document.body.innerHTML = '<div style="font-family:Arial;padding:24px;background:#07140b;color:white;min-height:100vh"><h1>Game error</h1><p style="color:#fecaca">' + (e.message || 'Unknown error') + '</p><p>Tell ChatGPT this exact error.</p></div>');
+});
+</script>
+</head>
+<body>
+<div class="app"><div class="shell">
+<aside class="sidebar"><div class="brand"><h1>🏉 AFL Pack<br>Legends</h1><p>Collect AFL cards. Equip 8. Duplicates stack.</p></div><div class="nav"><button class="tab active" data-screen="home">🏠 Home</button><button class="tab" data-screen="packs">🎁 Packs</button><button class="tab" data-screen="equip">⭐ Equip Team</button><button class="tab" data-screen="collection">📚 Collection</button><button class="tab" data-screen="save">💾 Save</button></div><div class="sideStats"><div class="stat"><b id="moneyText">$0.00</b><span>Money Bag</span></div><div class="stat"><b id="incomeText">$0.00/s</b><span>Income</span></div><div class="stat"><b id="powerText">0</b><span>Team Power</span></div><div class="stat"><b id="cardsText">0</b><span>Cards Owned</span></div></div></aside>
+<main>
+<section id="home" class="screen active"><div class="hero"><div><h2>Rip packs.<br>Build your eight.<br>Chase 1/1s.</h2><p>Open 5-card packs, stack duplicates for income, upgrade your best cards, and hunt the eight impossible One of Ones.</p><button onclick="showScreen('packs')">Open Packs</button></div><div class="heroCard"><h3>Current Team Power</h3><div class="powerCircle"><div><b id="homePower">0</b><span>Average rating of equipped cards</span></div></div></div></div><div class="panel" style="margin-top:16px"><div class="sectionTitle"><h2>Rarity Ladder</h2></div><div id="rarityLegend" class="grid"></div></div></section>
+<section id="packs" class="screen"><div class="sectionTitle"><h2>Pack Shop</h2><span class="hint">Every pack contains 5 cards</span></div><div id="packGrid" class="grid"></div></section>
+<section id="equip" class="screen"><div class="panel"><div class="sectionTitle"><h2>Equipped Best Eight</h2><span class="hint">Max 8 card types equipped</span></div><div class="row" style="margin-bottom:12px"><button class="good" onclick="equipBest()">Equip Best</button><button class="ghost" onclick="clearTeam()">Clear Team</button></div><div id="slots" class="slots"></div></div><div class="panel" style="margin-top:14px"><h2>Your Owned Cards</h2><p class="hint">Duplicates stack income on the equipped card. Example: 2 copies of an $800/s card = $1,600/s before upgrades.</p><div id="equipCards" class="cards"></div></div></section>
+<section id="collection" class="screen"><div class="panel"><div class="sectionTitle"><h2>Collection</h2></div><div id="filters" class="filters"></div><div id="collectionCards" class="cards"></div></div></section>
+<section id="save" class="screen"><div class="grid"><div class="panel"><h2>Save</h2><p class="hint">Auto-save is on, but this forces a save.</p><button class="good" onclick="saveGame(true)">Save Game</button></div><div class="panel"><h2>Load</h2><p class="hint">Load your local browser save.</p><button onclick="loadGame(true)">Load Game</button></div><div class="panel"><h2>Reset</h2><p class="hint">Deletes money, cards, upgrades, equipped team, and local save.</p><button class="danger" onclick="openResetConfirm()">Reset Everything</button></div></div></section>
+</main></div></div>
+<div id="openModal" class="modal"><div class="openStage" id="openStage"><div class="burst" id="burst"></div><h2 id="openTitle">Slice the pack</h2><p id="openHint" class="hint">Hold your mouse or finger and drag across the top line.</p><div class="revealTrack" id="revealTrack"></div><div class="sliceWrap"><div id="bigPack" class="bigPack"><div class="tear"></div><div id="packLabel" class="packLabel">BASE PACK</div><div class="sliceLine"><div id="sliceFill" class="sliceFill"></div></div></div><div id="wrapperCard" class="wrapperCard"><div id="flipCard" class="flipCard"><div class="cardBack"><div class="backLogo">🏉</div></div><div id="cardFace" class="cardFace"></div></div></div></div><button id="nextReveal" style="display:none" onclick="nextPackCard()">Next Card</button><button id="closeOpen" style="display:none" onclick="closeOpenModal()">Claim All Cards</button></div></div>
+<div id="resetModal" class="modal"><div class="confirmBox"><h2>Are you sure?</h2><p class="hint">This will delete your local save and put you back to $0 with no cards.</p><div class="row"><button class="danger" onclick="resetGame()">Yes, Reset</button><button class="ghost" onclick="document.getElementById('resetModal').classList.remove('active')">Cancel</button></div></div></div><div id="toast" class="toast"></div>
+<script>
+const SAVE_KEY='afl_pack_legends_save_v1';
+const OLD_KEYS=['hoop_pack_legends_save_v3','hoop_pack_legends_save_v2','hoop_pack_legends_save_v1'];
+const MAX_EQUIP=8;
+const upgradeMult=[1,1.1,1.2,1.3,1.4,1.5,1.6,1.7,1.8,1.9,2.0,2.1,2.2,2.3,2.4,2.5];
+const upgradeCostMult=[0,0.6,1.2,2.2,3.6,5.5,8,12,18,27,40,60,90,135,200,300];
+const rarities=[
+{id:'bronze',name:'Bronze',color:'#cd7f32',min:.01,max:.045,sell:1,rMin:57,rMax:61},
+{id:'common',name:'Common',color:'#cbd5e1',min:.045,max:.16,sell:2,rMin:60,rMax:65},
+{id:'uncommon',name:'Uncommon',color:'#22c55e',min:.20,max:.62,sell:7,rMin:64,rMax:70},
+{id:'rare',name:'Rare',color:'#38bdf8',min:1.25,max:3.8,sell:35,rMin:69,rMax:75},
+{id:'ultra',name:'Ultra Rare',color:'#818cf8',min:4.2,max:11,sell:120,rMin:74,rMax:80},
+{id:'epic',name:'Epic',color:'#c084fc',min:13,max:38,sell:420,rMin:79,rMax:85},
+{id:'legendary',name:'Legendary',color:'#facc15',min:50,max:140,sell:1500,rMin:84,rMax:90},
+{id:'mythic',name:'Mythic',color:'#fb7185',min:170,max:480,sell:5500,rMin:89,rMax:94},
+{id:'galactic',name:'Galactic',color:'#2dd4bf',min:600,max:1600,sell:20000,rMin:93,rMax:97},
+{id:'goat',name:'GOAT',color:'#f97316',min:2200,max:6500,sell:75000,rMin:96,rMax:99},
+{id:'cosmic',name:'Cosmic',color:'#f0abfc',min:9000,max:22000,sell:250000,rMin:98,rMax:101},
+{id:'oneofone',name:'One of One',color:'#fff',min:60000,max:160000,sell:1000000,rMin:101,rMax:106}
+];
+const packs=[
+{id:'base',name:'Base Pack',target:'bronze',price:0,gradient:'linear-gradient(135deg,#166534,#facc15)'},
+{id:'common',name:'Common Pack',target:'common',price:45,gradient:'linear-gradient(135deg,#94a3b8,#f8fafc)'},
+{id:'uncommon',name:'Uncommon Pack',target:'uncommon',price:420,gradient:'linear-gradient(135deg,#15803d,#86efac)'},
+{id:'rare',name:'Rare Pack',target:'rare',price:3600,gradient:'linear-gradient(135deg,#0369a1,#7dd3fc)'},
+{id:'ultra',name:'Ultra Rare Pack',target:'ultra',price:22000,gradient:'linear-gradient(135deg,#4338ca,#c4b5fd)'},
+{id:'epic',name:'Epic Pack',target:'epic',price:170000,gradient:'linear-gradient(135deg,#7e22ce,#f0abfc)'},
+{id:'legendary',name:'Legendary Pack',target:'legendary',price:1200000,gradient:'linear-gradient(135deg,#ca8a04,#fef08a)'},
+{id:'mythic',name:'Mythic Pack',target:'mythic',price:9500000,gradient:'linear-gradient(135deg,#be123c,#fb7185)'},
+{id:'galactic',name:'Galactic Pack',target:'galactic',price:72000000,gradient:'linear-gradient(135deg,#0f766e,#5eead4)'},
+{id:'goat',name:'GOAT Pack',target:'goat',price:650000000,gradient:'linear-gradient(135deg,#9a3412,#fdba74)'},
+{id:'cosmic',name:'Cosmic Pack',target:'cosmic',price:4800000000,gradient:'linear-gradient(135deg,#86198f,#f5d0fe)'},
+{id:'oneofone',name:'One of One Pack',target:'oneofone',price:30000000000,gradient:'linear-gradient(135deg,#f8fafc,#94a3b8,#ffffff)'}
+];
+const oneOfOneNames=['Leigh Matthews','Gary Ablett Sr','Wayne Carey','Tony Lockett','Michael Voss','Chris Judd','Gary Ablett Jr','Lance Franklin'];
+const playerPool=[
+['Nick Daicos','#d7a06c','#2b1a10','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Josh Daicos','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Marcus Bontempelli','#d6a15d','#3b2414','short','goatee',['common','uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Patrick Cripps','#d7a06c','#2c1b12','short','goatee',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Christian Petracca','#c98b58','#2c1b12','short','goatee',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Clayton Oliver','#f1c27d','#d66a3d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Max Gawn','#f1c27d','#5b351f','long','full',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Jeremy Cameron','#d7a06c','#2c1b12','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Tom Hawkins','#d7a06c','#4b2e1d','short','goatee',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Patrick Dangerfield','#d7a06c','#5b351f','short','goatee',['uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Isaac Heeney','#d7a06c','#4b2e1d','short','mo',['common','uncommon','rare','ultra','epic','legendary']],
+['Errol Gulden','#c98b58','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Chad Warner','#c98b58','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Tom Papley','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Lachie Neale','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Charlie Cameron','#6b3f24','#111','short','goatee',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Joe Daniher','#f1c27d','#4b2e1d','long','full',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Harris Andrews','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Zach Merrett','#f1c27d','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Jordan Ridley','#f1c27d','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra']],
+['Sam Durham','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Caleb Serong','#d7a06c','#3b2414','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Andrew Brayshaw','#d7a06c','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Nat Fyfe','#d7a06c','#4b2e1d','long','goatee',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Luke Jackson','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Harley Reid','#d7a06c','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Oscar Allen','#d7a06c','#5b351f','short','none',['bronze','common','uncommon','rare','ultra']],
+['Tim Kelly','#8d5524','#111','short','goatee',['bronze','common','uncommon','rare','ultra','epic']],
+['Elliot Yeo','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Tom Green','#d7a06c','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Toby Greene','#d7a06c','#3b2414','short','goatee',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Jesse Hogan','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Lachie Whitfield','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Sam Taylor','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Connor Rozee','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Zak Butters','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Jason Horne-Francis','#c98b58','#2c1b12','short','goatee',['common','uncommon','rare','ultra','epic','legendary']],
+['Ollie Wines','#d7a06c','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Dustin Martin','#d7a06c','#2c1b12','buzz','goatee',['uncommon','rare','ultra','epic','legendary','mythic','galactic','goat','cosmic']],
+['Trent Cotchin','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Jack Riewoldt','#f1c27d','#d66a3d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Shai Bolton','#6b3f24','#111','short','goatee',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Rowan Marshall','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Jack Steele','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Max King','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Nasiah Wanganeen-Milera','#8d5524','#111','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Jordan Dawson','#d7a06c','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Izak Rankine','#7a4728','#111','short','goatee',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Taylor Walker','#d7a06c','#4b2e1d','short','full',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Rory Laird','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Harry Sheezel','#f1c27d','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Luke Davies-Uniacke','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Nick Larkey','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Jy Simpkin','#8d5524','#111','short','goatee',['bronze','common','uncommon','rare','ultra']],
+['James Sicily','#d7a06c','#4b2e1d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Jai Newcombe','#d7a06c','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Will Day','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Jack Ginnivan','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Sam Walsh','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Charlie Curnow','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Harry McKay','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Jacob Weitering','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Zac Williams','#8d5524','#111','short','goatee',['bronze','common','uncommon','rare','ultra']],
+['Tom De Koning','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Darcy Moore','#d7a06c','#4b2e1d','long','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Jordan De Goey','#d7a06c','#3b2414','short','goatee',['common','uncommon','rare','ultra','epic','legendary']],
+['Scott Pendlebury','#d7a06c','#4b2e1d','short','none',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Steele Sidebottom','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Mason Cox','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra']],
+['Jeremy Howe','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Joel Selwood','#f1c27d','#d6a15d','short','none',['uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Jimmy Bartel','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary','mythic']],
+['Steve Johnson','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Matthew Scarlett','#d7a06c','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Gary Rohan','#f1c27d','#d66a3d','short','none',['bronze','common','uncommon','rare','ultra']],
+['Joel Amartey','#4b2a1a','#111','short','goatee',['common','rare','ultra','legendary']],
+['Edward Allan','#f1c27d','#d6a15d','short','none',['common','rare','ultra','legendary']],
+['Tanner Bruhn','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Bailey Smith','#f1c27d','#d6a15d','long','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Aaron Naughton','#f1c27d','#d6a15d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Tim English','#f1c27d','#d6a15d','short','none',['common','uncommon','rare','ultra','epic','legendary']],
+['Adam Treloar','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Mitch Georgiades','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra']],
+['Josh Dunkley','#d7a06c','#4b2e1d','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Dayne Zorko','#d7a06c','#2c1b12','short','none',['bronze','common','uncommon','rare','ultra','epic']],
+['Josh Rachele','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra']],
+['Jamarra Ugle-Hagan','#7a4728','#111','short','goatee',['common','uncommon','rare','ultra','epic','legendary']],
+['Michael Walters','#7a4728','#111','short','goatee',['bronze','common','uncommon','rare','ultra','epic']],
+['Shaun Burgoyne','#7a4728','#111','short','goatee',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Luke Hodge','#d7a06c','#4b2e1d','short','none',['uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Sam Mitchell','#f1c27d','#d6a15d','short','none',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Cyril Rioli','#7a4728','#111','short','goatee',['uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Jobe Watson','#d7a06c','#4b2e1d','short','goatee',['bronze','common','uncommon','rare','ultra','epic','legendary']],
+['Matthew Pavlich','#d7a06c','#4b2e1d','short','none',['uncommon','rare','ultra','epic','legendary','mythic','galactic']],
+['Ben Cousins','#f1c27d','#d6a15d','short','none',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Dean Cox','#f1c27d','#d6a15d','short','none',['uncommon','rare','ultra','epic','legendary','mythic']],
+['Robert Harvey','#f1c27d','#d6a15d','short','none',['rare','ultra','epic','legendary','mythic','goat']],
+['James Hird','#d7a06c','#d6a15d','short','none',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic']],
+['Nathan Buckley','#f1c27d','#d6a15d','short','none',['rare','ultra','epic','legendary','mythic','galactic','goat']],
+['Chris Judd','#f1c27d','#2c1b12','buzz','none',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Gary Ablett Jr','#d7a06c','#3b2414','bald','full',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Lance Franklin','#7a4728','#111','buzz','goatee',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Michael Voss','#f1c27d','#d66a3d','short','none',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Leigh Matthews','#d7a06c','#4b2e1d','short','mo',['legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Gary Ablett Sr','#d7a06c','#4b2e1d','long','mo',['legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Wayne Carey','#d7a06c','#d6a15d','short','none',['legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Tony Lockett','#d7a06c','#2c1b12','short','mo',['legendary','mythic','galactic','goat','cosmic','oneofone']],
+['Ron Barassi','#f1c27d','#4b2e1d','short','none',['legendary','mythic','galactic','goat','cosmic']],
+['Polly Farmer','#7a4728','#111','short','none',['legendary','mythic','galactic','goat','cosmic']],
+['Bob Skilton','#f1c27d','#d66a3d','short','none',['legendary','mythic','galactic','goat']],
+['Ted Whitten','#f1c27d','#4b2e1d','short','none',['legendary','mythic','galactic','goat']],
+['Adam Goodes','#6b3f24','#111','short','goatee',['rare','ultra','epic','legendary','mythic','galactic','goat','cosmic']],
+['Andrew McLeod','#7a4728','#111','short','goatee',['rare','ultra','epic','legendary','mythic','galactic','goat']],
+['Simon Black','#d7a06c','#3b2414','short','none',['rare','ultra','epic','legendary','mythic','galactic']],
+['Jonathan Brown','#f1c27d','#d66a3d','short','none',['rare','ultra','epic','legendary','mythic','galactic']],
+['Brent Harvey','#f1c27d','#d6a15d','short','none',['rare','ultra','epic','legendary','mythic']],
+['Matthew Lloyd','#f1c27d','#2c1b12','short','none',['rare','ultra','epic','legendary','mythic']],
+['Jason Akermanis','#f1c27d','#d6a15d','short','goatee',['rare','ultra','epic','legendary','mythic']]
+];
+let cards=[],state={money:0,owned:{},sellBank:{},upgrades:{},equipped:[],lastSave:Date.now()},currentFilter='all';
+let currentPack=null,pendingCards=[],revealIndex=0,sliceStart=null,sliceDone=false,revealLocked=false;
+function hash(s){let h=0;for(let i=0;i<s.length;i++)h=((h<<5)-h)+s.charCodeAt(i)|0;return Math.abs(h)}
+function money(n){if(n>=1e12)return'$'+(n/1e12).toFixed(2)+'T';if(n>=1e9)return'$'+(n/1e9).toFixed(2)+'B';if(n>=1e6)return'$'+(n/1e6).toFixed(2)+'M';if(n>=1e3)return'$'+(n/1e3).toFixed(2)+'K';return'$'+n.toFixed(2)}
+function rarity(id){return rarities.find(r=>r.id===id)}function rarityIndex(id){return rarities.findIndex(r=>r.id===id)}
+
+function hexToRgba(hex,a){
+  hex=String(hex||'#ffffff').replace('#','').trim();
+  if(hex.length===3)hex=hex.split('').map(x=>x+x).join('');
+  const n=parseInt(hex,16);
+  if(Number.isNaN(n))return 'rgba(255,255,255,'+a+')';
+  const r=(n>>16)&255,g=(n>>8)&255,b=n&255;
+  return 'rgba('+r+','+g+','+b+','+a+')';
+}
+function makeCards(){let id=0;playerPool.forEach(p=>{const [name,skin,hair,hairStyle,beard,tiers]=p;tiers.forEach(t=>{if(t==='oneofone'&&!oneOfOneNames.includes(name))return;const r=rarity(t),seed=hash(name+t),span=r.rMax-r.rMin+1,rating=Math.min(r.rMax,r.rMin+(seed%span)),income=+(r.min+(rating-r.rMin)/Math.max(1,(r.rMax-r.rMin))*(r.max-r.min)).toFixed(2);cards.push({id:'c'+id++,base:name,name:name,rarity:t,rating,income,sell:Math.round(r.sell*(.85+(rating-r.rMin)*.08)),skin,hair,hairStyle,beard,number:(seed%50)+1,oneOfOne:t==='oneofone'})})});cards.sort((a,b)=>rarityIndex(a.rarity)-rarityIndex(b.rarity)||a.rating-b.rating)}
+makeCards();
+function avatarHTML(c,big=false){let face='';if(c.beard==='full')face='<div class="beard"></div>';if(c.beard==='goatee')face='<div class="beard goatee"></div>';if(c.beard==='mo')face='<div class="mo"></div>';return `<div class="avatar" style="--skin:${c.skin};--hair:${c.hair};--jersey:${rarity(c.rarity).color};${big?'transform:scale(1.08)':''}"><div class="hairBase hair ${c.hairStyle}"></div><div class="ear l"></div><div class="ear r"></div><div class="head"></div>${face}<div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="nose"></div><div class="mouth"></div><div class="neck"></div><div class="arm l"></div><div class="arm r"></div><div class="body" data-no="${c.number}"></div><div class="shorts"></div><div class="shoe l"></div><div class="shoe r"></div><div class="footy"></div></div>`}
+function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.screen===id));renderAll()}
+document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
+function getOwnedCount(){return Object.values(state.owned).reduce((a,b)=>a+b,0)}
+function cardMultiplier(id){return upgradeMult[state.upgrades[id]||0]||1}
+function cardIncome(c){return c.income*(state.owned[c.id]||0)*cardMultiplier(c.id)}
+function getIncome(){return state.equipped.reduce((s,id)=>{const c=cards.find(x=>x.id===id);return s+(c?cardIncome(c):0)},0)}
+function getPower(){if(!state.equipped.length)return 0;return Math.round(state.equipped.reduce((s,id)=>{const c=cards.find(x=>x.id===id);return s+(c?c.rating+(state.upgrades[id]||0)*0.65:0)},0)/state.equipped.length)}
+function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(()=>t.className='toast',2100)}
+function packOdds(pack){
+ const ti=rarityIndex(pack.target);let weights={};
+ rarities.forEach((r,i)=>{const diff=i-ti;if(diff===0)weights[r.id]=56;else if(diff===-1)weights[r.id]=24;else if(diff<0)weights[r.id]=Math.max(3,16-Math.abs(diff)*3);else if(diff===1)weights[r.id]=5;else weights[r.id]=Math.max(.03,1.1-diff*.18)});
+ if(pack.id==='base')weights={bronze:86,common:10,uncommon:2.7,rare:.82,ultra:.28,epic:.08,legendary:.018,mythic:.004,galactic:.001,goat:.00025,cosmic:.00006,oneofone:.00001};
+ if(pack.id==='oneofone')weights={bronze:0,common:0,uncommon:0,rare:8,ultra:15,epic:22,legendary:20,mythic:14,galactic:7,goat:3,cosmic:1,oneofone:10};
+ const total=Object.values(weights).reduce((a,b)=>a+b,0);return Object.fromEntries(Object.entries(weights).map(([k,v])=>[k,v/total]));
+}
+function chooseRarity(pack){const odds=packOdds(pack);let roll=Math.random(),acc=0;for(const [id,p]of Object.entries(odds)){acc+=p;if(roll<=acc)return id}return Object.keys(odds)[0]}
+function availableCardsByRarity(rid){return cards.filter(c=>c.rarity===rid && (!c.oneOfOne || !(state.owned[c.id]>0)))}
+function chooseCard(pack){let rid=chooseRarity(pack),pool=availableCardsByRarity(rid);if(!pool.length){pool=availableCardsByRarity('cosmic');if(!pool.length)pool=availableCardsByRarity('goat');if(!pool.length)pool=cards.filter(c=>c.rarity==='galactic')}return pool[Math.floor(Math.random()*pool.length)]}
+function buyPack(id){const p=packs.find(x=>x.id===id);if(state.money<p.price){toast('Not enough money.');return}state.money-=p.price;pendingCards=[];for(let i=0;i<5;i++){pendingCards.push(chooseCard(p))}currentPack=p;openSliceModal(p);updateTop()}
+function openSliceModal(pack){
+ revealIndex=0;sliceStart=null;sliceDone=false;revealLocked=false;awaitingFlip=false;
+ const bp=document.getElementById('bigPack'),stage=document.getElementById('openStage'),wrap=document.getElementById('wrapperCard'),flip=document.getElementById('flipCard');
+ bp.className='bigPack';bp.style.background=pack.gradient;
+ document.getElementById('packLabel').innerHTML=pack.name.toUpperCase()+'<small>5 CARD PACK</small>';
+ document.getElementById('openModal').classList.add('active');
+ stage.className='openStage';stage.style.setProperty('--pullColor','#22c55e');stage.style.setProperty('--pullGlow','rgba(34,197,94,.18)');
+ document.getElementById('openTitle').textContent='Slice the pack';
+ document.getElementById('openHint').textContent='Drag across the top line, or tap the pack, to rip it open.';
+ document.getElementById('sliceFill').style.width='0%';
+ wrap.className='wrapperCard';flip.className='flipCard';
+ document.getElementById('cardFace').innerHTML='';
+ document.getElementById('nextReveal').style.display='none';
+ document.getElementById('closeOpen').style.display='none';
+ document.getElementById('burst').innerHTML='';
+ renderDots();
+}
+function renderDots(){const d=document.getElementById('revealTrack');d.innerHTML='';for(let i=0;i<5;i++){const x=document.createElement('div');x.className='dot '+(i<revealIndex?'done':i===revealIndex?'now':'');d.appendChild(x)}}
+const bigPack=document.getElementById('bigPack');
+bigPack.addEventListener('pointerdown',e=>{const r=bigPack.getBoundingClientRect();if(e.clientY-r.top<145){sliceStart=e.clientX-r.left;try{bigPack.setPointerCapture(e.pointerId)}catch(_){} }});
+bigPack.addEventListener('pointermove',e=>{if(sliceStart===null||sliceDone)return;const r=bigPack.getBoundingClientRect(),x=e.clientX-r.left,progress=Math.max(0,Math.min(1,(x-sliceStart)/(r.width*.66)));document.getElementById('sliceFill').style.width=(progress*100)+'%';if(progress>.86)finishSlice()});
+bigPack.addEventListener('pointerup',()=>{if(!sliceDone){sliceStart=null;document.getElementById('sliceFill').style.width='0%'}});
+bigPack.addEventListener('click',()=>{if(!sliceDone && currentPack && pendingCards.length){document.getElementById('sliceFill').style.width='100%';finishSlice()}});
+function finishSlice(){if(sliceDone)return;sliceDone=true;document.getElementById('bigPack').classList.add('opened');document.getElementById('openTitle').textContent='Wrapper ripped!';document.getElementById('openHint').textContent='Card 1 is coming out...';setTimeout(showCurrentCard,360)}
+function showCurrentCard(){
+ try{
+  const c=pendingCards[revealIndex];
+  if(!c){document.getElementById('closeOpen').style.display='inline-block';return;}
+  const r=rarity(c.rarity),idx=rarityIndex(c.rarity),wrap=document.getElementById('wrapperCard'),flip=document.getElementById('flipCard'),stage=document.getElementById('openStage'),face=document.getElementById('cardFace');
+  revealLocked=true;
+  wrap.className='wrapperCard';
+  flip.className='flipCard';
+  flip.style.transform='rotateY(0deg)';
+  face.innerHTML=cardHTML(c,true);
+  document.getElementById('nextReveal').style.display='none';
+  document.getElementById('closeOpen').style.display='none';
+  document.getElementById('burst').innerHTML='';
+  stage.className='openStage';
+  stage.style.setProperty('--pullColor',r.color);
+  stage.style.setProperty('--pullGlow',hexToRgba(r.color,.26));
+  document.getElementById('openTitle').textContent=`Card ${revealIndex+1}/5`;
+  document.getElementById('openHint').textContent=idx>=7?'Huge pull charging...':idx>=3?'Good pull charging...':'Card is face-down...';
+  requestAnimationFrame(()=>{wrap.classList.add('out')});
+  const teaseDelay = idx<=2 ? 260 : idx<=4 ? 820 : idx<=6 ? 1150 : idx<=8 ? 2150 : idx<=10 ? 2850 : 3500;
+  setTimeout(()=>preReveal(c),120);
+  setTimeout(()=>forceFlipCard(c),teaseDelay);
+  setTimeout(()=>{const f=document.getElementById('flipCard'); if(f && !f.classList.contains('flipped')) forceFlipCard(c)}, teaseDelay+520);
+ }catch(err){
+  console.error('Reveal failed:',err);
+  revealLocked=false;
+  const c=pendingCards[revealIndex];
+  if(c){
+    document.getElementById('cardFace').innerHTML=cardHTML(c,true);
+    document.getElementById('wrapperCard').classList.add('out');
+    document.getElementById('flipCard').className='flipCard flipped';
+    addCard(c.id,Math.max(0.25,currentPack.price*0.04));saveGame(false);renderAll();
+    revealIndex++;renderDots();
+  }
+ }
+}
+function preReveal(c){
+ const idx=rarityIndex(c.rarity),color=rarity(c.rarity).color,flip=document.getElementById('flipCard'),stage=document.getElementById('openStage'),burst=document.getElementById('burst'),back=document.querySelector('.cardBack');
+ stage.style.setProperty('--pullColor',color);stage.style.setProperty('--pullGlow',hexToRgba(color,.38));
+ if(back)back.classList.toggle('electric',idx>=7);
+ if(idx<=1){makeBurst(color,8,120);return;}
+ if(idx===2){flip.classList.add('teaseSmall');addAura(color,.55);makeBurst(color,18,190);return;}
+ if(idx<=4){flip.classList.add('teaseRare');stage.classList.add('preGlow');addAura(color,.9);makeBurst(color,42,290);addSpotlight();return;}
+ if(idx<=6){flip.classList.add('teaseEpic');stage.classList.add('preGlow');addAura(color,1.2);makeBurst(color,80,380);makeShockwaves(1,color);addMegaSpot(color,1.25);return;}
+ if(idx<=8){flip.classList.add('teaseHuge');stage.classList.add('preGlow','screenFlash');addAura(color,2.05);makeBurst(color,150,520);makeBolts(idx+4,color);makeElectricCrawlers(18,color,1.6);makeShockwaves(3,color);addMegaSpot(color,2.05);return;}
+ flip.classList.add(idx>=11?'teaseOne':'teaseHuge');stage.classList.add('preGlow','screenFlash');addAura(color,2.65);makeBurst(color,230,640);makeBolts(idx+8,color);makeElectricCrawlers(30,color,2.35);makeShockwaves(4,color);makeConfetti(color,80);addMegaSpot(color,2.65);
+}
+function addAura(color,time=1.1){const b=document.getElementById('burst');const a=document.createElement('div');a.className='rarityAura';a.style.setProperty('--pullColor',color);a.style.setProperty('--auraTime',time+'s');b.appendChild(a);setTimeout(()=>a.remove(),time*1000+150)}
+function addMegaSpot(color,time=1.8){const b=document.getElementById('burst');const s=document.createElement('div');s.className='megaSpot';s.style.setProperty('--pullColor',color);s.style.setProperty('--spotTime',time+'s');b.appendChild(s);setTimeout(()=>s.remove(),time*1000+150)}
+function makeElectricCrawlers(count,color,time=1.2){const b=document.getElementById('burst');for(let i=0;i<count;i++){const e=document.createElement('div');e.className='electricCrawler';e.style.background=`linear-gradient(180deg,transparent,#fff,${color},transparent)`;e.style.setProperty('--pullColor',color);e.style.setProperty('--rot',(Math.random()*360)+'deg');e.style.setProperty('--dist',(70+Math.random()*210)+'px');e.style.setProperty('--zapTime',(time*(.45+Math.random()*.75))+'s');b.appendChild(e);setTimeout(()=>e.remove(),time*1000+450)}}
+function forceFlipCard(c){
+ if(!pendingCards[revealIndex])return;
+ const idx=rarityIndex(c.rarity),r=rarity(c.rarity),flip=document.getElementById('flipCard'),stage=document.getElementById('openStage');
+ flip.classList.remove('teaseSmall','teaseRare','teaseEpic','teaseHuge','teaseOne'); const back=document.querySelector('.cardBack'); if(back)back.classList.remove('electric');
+ flip.classList.add('flipped');
+ flip.style.transform='rotateY(180deg)';
+ if(idx>=3){stage.classList.add('revealBoom');}
+ if(idx>=5){flip.classList.add('revealShake');}
+ if(idx>=7){makeBolts(idx+2,r.color);makeShockwaves(2,r.color);}
+ if(idx>=9){makeConfetti(r.color,62);}
+ pullAnimation(c);
+ document.getElementById('openTitle').textContent='You pulled '+c.name+'!';
+ document.getElementById('openHint').textContent=`${r.name} • ${c.rating} OVR • ${money(c.income)}/s base — tap card for next`;
+ addCard(c.id,Math.max(0.25,currentPack.price*0.04));saveGame(false);renderAll();
+ revealLocked=false; revealIndex++; renderDots();
+ if(revealIndex>=5){setTimeout(()=>{document.getElementById('closeOpen').style.display='inline-block';document.getElementById('openHint').textContent='All 5 cards claimed.'},420)}
+}
+function addSpotlight(){const b=document.getElementById('burst');const s=document.createElement('div');s.className='spotlight';b.appendChild(s);setTimeout(()=>s.remove(),1000)}
+function makeConfetti(color,count=36){const b=document.getElementById('burst');for(let i=0;i<count;i++){const e=document.createElement('div');e.className='confettiShard';e.style.background=i%3===0?'#fff':color;e.style.setProperty('--x',(Math.random()*700-350)+'px');e.style.setProperty('--y',(Math.random()*560-280)+'px');e.style.setProperty('--rot',(Math.random()*720-360)+'deg');b.appendChild(e);setTimeout(()=>e.remove(),900)}}
+function advanceRevealedCard(){
+ if(revealLocked)return;
+ if(revealIndex>=5){closeOpenModal();return;}
+ const wrap=document.getElementById('wrapperCard'),flip=document.getElementById('flipCard');
+ revealLocked=true; wrap.classList.add('cardExit');
+ setTimeout(()=>{flip.style.transform='';showCurrentCard()},240);
+}
+document.getElementById('wrapperCard').onclick=advanceRevealedCard;
+function nextPackCard(){advanceRevealedCard()}
+function closeOpenModal(){document.getElementById('openModal').classList.remove('active')}
+function pullAnimation(c){const idx=rarityIndex(c.rarity),color=rarity(c.rarity).color,stage=document.getElementById('openStage');stage.style.setProperty('--pullColor',color);stage.style.setProperty('--pullGlow',hexToRgba(color,.35));if(idx>=3)stage.classList.add('screenFlash');if(idx>=6)stage.classList.add('legendaryPull');const count=idx>=11?260:idx>=10?220:idx>=9?190:idx>=8?160:idx>=7?130:idx>=6?105:idx>=5?75:idx>=4?45:idx>=3?30:idx>=2?16:9;makeBurst(color,count,idx>=7?560:idx>=5?430:idx>=3?310:190);if(idx>=7)makeBolts(idx,color);if(idx>=5)makeShockwaves(idx>=9?3:1,color)}
+function makeBurst(color,count,spread=360){const b=document.getElementById('burst');for(let i=0;i<count;i++){const s=document.createElement('div');s.className='spark';s.style.left=(48+Math.random()*4)+'%';s.style.top=(42+Math.random()*8)+'%';s.style.background=i%5===0?'#fff':color;s.style.width=s.style.height=(Math.random()*10+3)+'px';s.style.setProperty('--x',(Math.random()*spread*2-spread)+'px');s.style.setProperty('--y',(Math.random()*spread*1.65-spread*.82)+'px');b.appendChild(s)}}
+function makeBolts(idx,color){const b=document.getElementById('burst');const n=idx>=10?14:idx>=8?9:5;for(let i=0;i<n;i++){const e=document.createElement('div');e.className='arcBolt';e.style.setProperty('--rot',(Math.random()*360)+'deg');e.style.setProperty('--dist',(90+Math.random()*140)+'px');e.style.background=`linear-gradient(180deg,transparent,#fff,${color},transparent)`;b.appendChild(e)}}
+function makeShockwaves(n,color){const b=document.getElementById('burst');for(let i=0;i<n;i++){const w=document.createElement('div');w.className='shockwave';w.style.borderColor=color;w.style.animationDelay=(i*.12)+'s';b.appendChild(w)}}
+function addCard(id,sellValue=0.25){const c=cards.find(x=>x.id===id);if(c.oneOfOne && state.owned[id]>0)return;state.owned[id]=(state.owned[id]||0)+1;state.sellBank=state.sellBank||{};state.sellBank[id]=(state.sellBank[id]||0)+sellValue}
+function cardHTML(c,reveal=false){const r=rarity(c.rarity),count=state.owned[c.id]||0,lvl=state.upgrades[c.id]||0,mult=cardMultiplier(c.id),total=cardIncome(c);return `<div class="card" style="border-color:${r.color};box-shadow:0 0 25px ${r.color}33,0 16px 35px rgba(0,0,0,.28)"><div class="shine"></div><div class="rating">${c.rating}<small>OVR</small></div><span class="rarityTag" style="background:${r.color}">${r.name}</span><div class="playerArt" style="box-shadow:inset 0 0 35px ${r.color}55">${avatarHTML(c)}</div><div class="name">${c.name}</div><div class="income">${money(c.income)} / sec base</div><div class="owned">Owned: ${count} • Upgrade: ${mult.toFixed(1)}x</div>${count?`<div class="owned">Stack income: ${money(total)}/s</div>`:''}</div>`}
+function cardElement(c,mode){const wrap=document.createElement('div');wrap.innerHTML=cardHTML(c);const el=wrap.firstElementChild,actions=document.createElement('div');actions.className='cardActions';const count=state.owned[c.id]||0;if(mode==='equip'){const isEq=state.equipped.includes(c.id),b=document.createElement('button');b.className=isEq?'danger tiny':'good tiny';b.textContent=isEq?'Unequip':'Equip';b.disabled=!count&&!isEq;b.addEventListener('click',()=>isEq?unequip(c.id):equip(c.id));actions.appendChild(b)}const sell=document.createElement('button');sell.className='ghost tiny';sell.textContent='Sell';sell.disabled=count<=0;sell.addEventListener('click',()=>sellCard(c.id));actions.appendChild(sell);el.appendChild(actions);const up=document.createElement('div');up.className='upgradePanel';up.id='up_'+c.id;el.appendChild(up);const upBtn=document.createElement('button');upBtn.className='tiny';upBtn.textContent='Upgrade';upBtn.disabled=count<=0;upBtn.onclick=()=>toggleUpgrade(c.id);el.appendChild(upBtn);renderUpgradePanel(c,up);if(!count&&mode==='collection')el.classList.add('locked');return el}
+function renderUpgradePanel(c,panel){const lvl=state.upgrades[c.id]||0;if(lvl>=15){panel.innerHTML=`<b>MAX UPGRADE</b><div class="smallText">2.5x income multiplier</div>`;return}const next=lvl+1,cost=Math.max(1,Math.round(c.income*upgradeCostMult[next]));panel.innerHTML=`<b>Upgrade ${lvl}/15 → ${next}/15</b><div class="smallText">Current: ${upgradeMult[lvl].toFixed(1)}x • Next: ${upgradeMult[next].toFixed(1)}x</div><div class="smallText">Cost: ${money(cost)}</div><button class="good tiny" onclick="upgradeCard('${c.id}')">Buy Upgrade</button>`}
+function toggleUpgrade(id){const p=document.getElementById('up_'+id);if(p)p.classList.toggle('open')}
+function upgradeCard(id){const c=cards.find(x=>x.id===id),lvl=state.upgrades[id]||0;if(!c||lvl>=15)return;if((state.owned[id]||0)<=0){toast('Own the card first.');return}const cost=Math.max(1,Math.round(c.income*upgradeCostMult[lvl+1]));if(state.money<cost){toast('Not enough money for upgrade.');return}state.money-=cost;state.upgrades[id]=lvl+1;saveGame(false);renderAll();toast('Upgraded to '+upgradeMult[lvl+1].toFixed(1)+'x.')}
+function equip(id){if(state.equipped.includes(id))return;if((state.owned[id]||0)<=0){toast('You do not own this card.');return}if(state.equipped.length>=MAX_EQUIP){toast('You can only equip 8 card types.');return}state.equipped.push(id);saveGame(false);renderAll();toast('Equipped.')}
+function unequip(id){const i=state.equipped.indexOf(id);if(i>-1)state.equipped.splice(i,1);saveGame(false);renderAll();toast('Unequipped.')}
+function equipBest(){state.equipped=cards.filter(c=>(state.owned[c.id]||0)>0).sort((a,b)=>cardIncome(b)-cardIncome(a)||b.rating-a.rating).slice(0,MAX_EQUIP).map(c=>c.id);saveGame(false);renderAll();toast('Best 8 equipped.')}
+function clearTeam(){state.equipped=[];saveGame(false);renderAll();toast('Team cleared.')}
+function sellCard(id){const owned=state.owned[id]||0;if(owned<=0)return;const c=cards.find(x=>x.id===id);if(c.oneOfOne){toast('One of Ones cannot be sold.');return}state.sellBank=state.sellBank||{};const payout=(state.sellBank[id]||c.sell)/owned;state.owned[id]=owned-1;state.sellBank[id]=Math.max(0,(state.sellBank[id]||payout)-payout);if(state.owned[id]<=0){delete state.owned[id];delete state.sellBank[id];state.equipped=state.equipped.filter(x=>x!==id)}state.money+=payout;saveGame(false);renderAll();toast('Sold for '+money(payout))}
+function togglePackInfo(btn){const odds=btn.parentElement.querySelector('.odds');odds.style.display=odds.style.display==='none'?'block':'none';btn.textContent=odds.style.display==='none'?'Info':'Hide Info'}
+function renderPacks(){const g=document.getElementById('packGrid');g.innerHTML='';packs.forEach(p=>{const odds=packOdds(p),can=state.money>=p.price,visibleOdds=Object.entries(odds).filter(([id,v])=>v*100>=0.01).map(([id,v])=>`${rarity(id).name}: ${(v*100).toFixed(v*100<1?2:1)}%`).join('<br>'),d=document.createElement('div');d.className='panel pack';d.innerHTML=`<div class="packInner"><div class="packArt" style="background:${p.gradient}">${p.name.toUpperCase()}<small>5 CARDS</small></div><h3>${p.name}</h3><div class="price">${p.price===0?'FREE':money(p.price)}</div><button ${can?'':'disabled'}>${p.price===0?'Open Pack':'Buy Pack'}</button><button class="ghost infoBtn" type="button">Info</button><div class="odds" style="display:none;margin-top:8px">${visibleOdds}<br><br><span class="smallText">All normal rarities are possible. Some odds are too low to be shown. One of One Pack has only a 10% One of One chance.</span></div></div>`;d.querySelector('button').onclick=()=>buyPack(p.id);d.querySelector('.infoBtn').onclick=(e)=>togglePackInfo(e.target);g.appendChild(d)})}
+function renderEquip(){const s=document.getElementById('slots');s.innerHTML='';for(let i=0;i<MAX_EQUIP;i++){const id=state.equipped[i],c=cards.find(x=>x.id===id),d=document.createElement('div');d.className='slot';d.innerHTML=c?`<b>${i+1}. ${c.name}</b><small>${rarity(c.rarity).name} • ${c.rating} OVR • ${state.owned[c.id]} copies • ${cardMultiplier(c.id).toFixed(1)}x • ${money(cardIncome(c))}/s</small><button class="tiny danger" style="margin-top:8px" onclick="unequip('${c.id}')">Unequip</button>`:`<b>${i+1}. Empty Slot</b><small>Equip a card to raise income and power.</small>`;s.appendChild(d)}const ec=document.getElementById('equipCards');ec.innerHTML='';cards.filter(c=>(state.owned[c.id]||0)>0).sort((a,b)=>cardIncome(b)-cardIncome(a)||b.rating-a.rating).forEach(c=>ec.appendChild(cardElement(c,'equip')));if(!ec.children.length)ec.innerHTML='<p class="hint">No cards yet. Open Base Packs first.</p>'}
+function renderCollection(){const f=document.getElementById('filters');f.innerHTML='';const all=document.createElement('button');all.className='tiny '+(currentFilter==='all'?'active':'');all.textContent='All';all.onclick=()=>{currentFilter='all';renderCollection()};f.appendChild(all);rarities.forEach(r=>{const b=document.createElement('button');b.className='tiny '+(currentFilter===r.id?'active':'');b.textContent=r.name;b.style.border=`1px solid ${r.color}`;b.onclick=()=>{currentFilter=r.id;renderCollection()};f.appendChild(b)});const w=document.getElementById('collectionCards');w.innerHTML='';cards.filter(c=>currentFilter==='all'||c.rarity===currentFilter).forEach(c=>w.appendChild(cardElement(c,'collection')))}
+function renderLegend(){const el=document.getElementById('rarityLegend');if(!el||el.dataset.done)return;rarities.forEach(r=>{const d=document.createElement('div');d.className='stat';d.innerHTML=`<b style="color:${r.color}">${r.name}</b><span>${r.rMin}-${r.rMax} OVR</span>`;el.appendChild(d)});el.dataset.done=1}
+function updateTop(){const p=getPower();document.getElementById('moneyText').textContent=money(state.money);document.getElementById('incomeText').textContent=money(getIncome())+'/s';document.getElementById('powerText').textContent=p;document.getElementById('homePower').textContent=p;document.getElementById('cardsText').textContent=getOwnedCount()}
+function renderAll(){updateTop();renderLegend();renderPacks();renderEquip();renderCollection()}
+function saveGame(manual){state.lastSave=Date.now();localStorage.setItem(SAVE_KEY,JSON.stringify(state));if(manual)toast('Game saved.')}
+function loadGame(manual){let raw=localStorage.getItem(SAVE_KEY);if(!raw){if(manual)toast('No AFL save found.');return}try{const d=JSON.parse(raw);state={money:+d.money||0,owned:d.owned||{},sellBank:d.sellBank||{},upgrades:d.upgrades||{},equipped:Array.isArray(d.equipped)?d.equipped.slice(0,MAX_EQUIP):[],lastSave:d.lastSave||Date.now()};state.equipped=state.equipped.filter(id=>cards.some(c=>c.id===id)&&(state.owned[id]||0)>0);renderAll();if(manual)toast('Game loaded.')}catch(e){toast('Save was broken.')}}
+function openResetConfirm(){document.getElementById('resetModal').classList.add('active')}
+function resetGame(){state={money:0,owned:{},sellBank:{},upgrades:{},equipped:[],lastSave:Date.now()};Object.keys(localStorage).forEach(k=>{if(k.toLowerCase().includes('afl')||k.toLowerCase().includes('pack_legends')||k.toLowerCase().includes('hoop_pack')||k===SAVE_KEY)localStorage.removeItem(k)});document.getElementById('openModal').classList.remove('active');document.getElementById('resetModal').classList.remove('active');pendingCards=[];revealIndex=0;renderAll();saveGame(false);toast('Everything reset.')}
+setInterval(()=>{state.money+=getIncome()/10;updateTop()},100);setInterval(()=>saveGame(false),10000);loadGame(false);renderAll();
+</script>
+
+
+</body>
+</html>

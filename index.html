@@ -83,6 +83,86 @@ button:disabled{opacity:.4;cursor:not-allowed;transform:none;filter:none}
 @keyframes preHugeShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}8%{transform:translate(-8px,2px) rotate(-2deg) scale(1.01)}16%{transform:translate(8px,-2px) rotate(2deg)}24%{transform:translate(-12px,1px) rotate(-3deg) scale(1.02)}32%{transform:translate(12px,-1px) rotate(3deg)}40%{transform:translate(-16px,3px) rotate(-4deg) scale(1.035)}48%{transform:translate(16px,-3px) rotate(4deg)}58%{transform:translate(-10px,2px) rotate(-2.5deg)}68%{transform:translate(10px,-2px) rotate(2.5deg)}82%{transform:scale(1.04)}}
 @keyframes preOneShake{0%,100%{transform:translate(0,0) rotate(0) scale(1)}6%{transform:translate(-12px,3px) rotate(-3deg) scale(1.02)}12%{transform:translate(12px,-3px) rotate(3deg)}18%{transform:translate(-18px,2px) rotate(-4deg) scale(1.04)}24%{transform:translate(18px,-2px) rotate(4deg)}30%{transform:translate(-22px,4px) rotate(-5deg) scale(1.055)}36%{transform:translate(22px,-4px) rotate(5deg)}44%{transform:translate(-16px,3px) rotate(-4deg)}52%{transform:translate(16px,-3px) rotate(4deg)}64%{transform:scale(1.08)}78%{transform:scale(1.03)}}
 
+
+/* TURBO BOSS rarity */
+.card.turboBossCard{
+  animation: turboCardPulse 1.2s infinite alternate;
+  background:
+    radial-gradient(circle at 20% 10%,rgba(255,255,255,.42),transparent 26%),
+    radial-gradient(circle at 80% 5%,rgba(34,211,238,.45),transparent 28%),
+    linear-gradient(145deg,#16001f,#3b0764 38%,#00f5ff 72%,#fff700);
+}
+.card.turboBossCard .rarityTag{
+  color:#020617!important;
+  box-shadow:0 0 22px rgba(0,245,255,.9),0 0 38px rgba(255,247,0,.7);
+}
+@keyframes turboCardPulse{
+  from{filter:saturate(1.25) brightness(1);transform:translateY(0) rotate(-.2deg)}
+  to{filter:saturate(2.2) brightness(1.22);transform:translateY(-3px) rotate(.2deg)}
+}
+.openStage.turboBossStage{
+  animation: turboStageMadness .9s infinite both!important;
+  background:
+    radial-gradient(circle at 50% 20%,rgba(255,255,255,.38),transparent 18%),
+    radial-gradient(circle at 20% 30%,rgba(0,245,255,.42),transparent 28%),
+    radial-gradient(circle at 80% 55%,rgba(255,0,255,.36),transparent 30%),
+    linear-gradient(145deg,#020617,#3b0764 42%,#001f2a)!important;
+}
+.flipCard.teaseTurbo{
+  animation: turboPreShake 3.8s cubic-bezier(.1,.9,.2,1) both!important;
+}
+.flipCard.turboRevealShake{
+  animation: turboRevealShake .9s ease-in-out both!important;
+}
+.turboPortal{
+  position:absolute;left:50%;top:44%;width:80px;height:80px;border-radius:50%;
+  transform:translate(-50%,-50%);
+  background:conic-gradient(from 0deg,#fff,#00f5ff,#ff00ff,#fff700,#fff);
+  box-shadow:0 0 60px #00f5ff,0 0 120px #ff00ff, inset 0 0 35px #fff;
+  mix-blend-mode:screen;opacity:.9;
+  animation:turboPortal 1.35s ease-out forwards;
+}
+.turboRing{
+  position:absolute;left:50%;top:44%;width:36px;height:36px;border-radius:50%;
+  border:4px solid #fff;transform:translate(-50%,-50%);
+  box-shadow:0 0 28px var(--pullColor),0 0 70px #ff00ff;
+  animation:turboRing .95s ease-out forwards;
+}
+@keyframes turboStageMadness{
+  0%,100%{transform:translate(0,0) rotate(0deg);filter:saturate(1.7) brightness(1.05)}
+  15%{transform:translate(-7px,5px) rotate(-.35deg)}
+  30%{transform:translate(8px,-6px) rotate(.35deg);filter:saturate(2.5) brightness(1.45)}
+  45%{transform:translate(-10px,-4px) rotate(-.45deg)}
+  60%{transform:translate(10px,6px) rotate(.45deg)}
+  75%{transform:translate(-5px,2px) rotate(-.25deg)}
+}
+@keyframes turboPreShake{
+  0%{transform:translate(0,0) rotate(0) scale(1)}
+  8%{transform:translate(-22px,8px) rotate(-6deg) scale(1.05)}
+  16%{transform:translate(22px,-8px) rotate(6deg) scale(1.07)}
+  24%{transform:translate(-30px,-6px) rotate(-8deg) scale(1.1)}
+  32%{transform:translate(30px,6px) rotate(8deg) scale(1.08)}
+  42%{transform:translate(-18px,10px) rotate(-5deg) scale(1.13)}
+  54%{transform:translate(18px,-10px) rotate(5deg) scale(1.08)}
+  68%{transform:scale(1.18) rotate(0)}
+  82%{transform:scale(1.05)}
+  100%{transform:translate(0,0) rotate(0) scale(1)}
+}
+@keyframes turboRevealShake{
+  0%,100%{transform:rotateY(180deg) scale(1)}
+  12%{transform:rotateY(180deg) translate(-14px,6px) rotate(-2deg) scale(1.05)}
+  24%{transform:rotateY(180deg) translate(14px,-6px) rotate(2deg) scale(1.08)}
+  36%{transform:rotateY(180deg) translate(-20px,-4px) rotate(-3deg) scale(1.1)}
+  48%{transform:rotateY(180deg) translate(20px,4px) rotate(3deg) scale(1.07)}
+  68%{transform:rotateY(180deg) scale(1.16)}
+}
+@keyframes turboPortal{
+  to{width:780px;height:780px;opacity:0;transform:translate(-50%,-50%) rotate(720deg)}
+}
+@keyframes turboRing{
+  to{width:720px;height:720px;opacity:0;border-width:1px}
+}
+
 </style>
 
 <script>
@@ -121,7 +201,8 @@ const rarities=[
 {id:'galactic',name:'Galactic',color:'#2dd4bf',min:600,max:1600,sell:20000,rMin:93,rMax:97},
 {id:'goat',name:'GOAT',color:'#f97316',min:2200,max:6500,sell:75000,rMin:96,rMax:99},
 {id:'cosmic',name:'Cosmic',color:'#f0abfc',min:9000,max:22000,sell:250000,rMin:98,rMax:101},
-{id:'oneofone',name:'One of One',color:'#fff',min:60000,max:160000,sell:1000000,rMin:101,rMax:106}
+{id:'oneofone',name:'One of One',color:'#fff',min:60000,max:160000,sell:1000000,rMin:101,rMax:106},
+{id:'turboboss',name:'Turbo Boss',color:'#00f5ff',min:5000000,max:25000000,sell:250000000,rMin:120,rMax:140}
 ];
 const packs=[
 {id:'base',name:'Base Pack',target:'bronze',price:0,gradient:'linear-gradient(135deg,#166534,#facc15)'},
@@ -139,6 +220,9 @@ const packs=[
 ];
 const oneOfOneNames=['Leigh Matthews','Gary Ablett Sr','Wayne Carey','Tony Lockett','Michael Voss','Chris Judd','Gary Ablett Jr','Lance Franklin'];
 const playerPool=[
+['Jack Petruccelle','#d7a06c','#3b2414','short','none',['turboboss']],
+['Isiah Dudley','#7a4728','#111','short','goatee',['turboboss']],
+['Tex Walker','#d7a06c','#4b2e1d','short','full',['turboboss']],
 ['Nick Daicos','#d7a06c','#2b1a10','short','none',['common','uncommon','rare','ultra','epic','legendary','mythic']],
 ['Josh Daicos','#d7a06c','#3b2414','short','none',['bronze','common','uncommon','rare','ultra','epic']],
 ['Marcus Bontempelli','#d6a15d','#3b2414','short','goatee',['common','uncommon','rare','ultra','epic','legendary','mythic','galactic']],
@@ -274,6 +358,18 @@ function hexToRgba(hex,a){
 }
 function makeCards(){let id=0;playerPool.forEach(p=>{const [name,skin,hair,hairStyle,beard,tiers]=p;tiers.forEach(t=>{if(t==='oneofone'&&!oneOfOneNames.includes(name))return;const r=rarity(t),seed=hash(name+t),span=r.rMax-r.rMin+1,rating=Math.min(r.rMax,r.rMin+(seed%span)),income=+(r.min+(rating-r.rMin)/Math.max(1,(r.rMax-r.rMin))*(r.max-r.min)).toFixed(2);cards.push({id:'c'+id++,base:name,name:name,rarity:t,rating,income,sell:Math.round(r.sell*(.85+(rating-r.rMin)*.08)),skin,hair,hairStyle,beard,number:(seed%50)+1,oneOfOne:t==='oneofone'})})});cards.sort((a,b)=>rarityIndex(a.rarity)-rarityIndex(b.rarity)||a.rating-b.rating)}
 makeCards();
+const turboBossIncomeOverrides={
+  'Jack Petruccelle':25000000,
+  'Tex Walker':5000000,
+  'Isiah Dudley':12500000
+};
+cards.forEach(c=>{
+  if(c.rarity==='turboboss'){
+    c.income=turboBossIncomeOverrides[c.name]||c.income;
+    c.sell=Math.round(c.income*10);
+    c.rating=c.name==='Jack Petruccelle'?140:(c.name==='Isiah Dudley'?132:125);
+  }
+});
 function avatarHTML(c,big=false){let face='';if(c.beard==='full')face='<div class="beard"></div>';if(c.beard==='goatee')face='<div class="beard goatee"></div>';if(c.beard==='mo')face='<div class="mo"></div>';return `<div class="avatar" style="--skin:${c.skin};--hair:${c.hair};--jersey:${rarity(c.rarity).color};${big?'transform:scale(1.08)':''}"><div class="hairBase hair ${c.hairStyle}"></div><div class="ear l"></div><div class="ear r"></div><div class="head"></div>${face}<div class="brow l"></div><div class="brow r"></div><div class="eye l"></div><div class="eye r"></div><div class="nose"></div><div class="mouth"></div><div class="neck"></div><div class="arm l"></div><div class="arm r"></div><div class="body" data-no="${c.number}"></div><div class="shorts"></div><div class="shoe l"></div><div class="shoe r"></div><div class="footy"></div></div>`}
 function showScreen(id){document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));document.getElementById(id).classList.add('active');document.querySelectorAll('.tab').forEach(t=>t.classList.toggle('active',t.dataset.screen===id));renderAll()}
 document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>showScreen(b.dataset.screen));
@@ -285,12 +381,12 @@ function getPower(){if(!state.equipped.length)return 0;return Math.round(state.e
 function toast(msg){const t=document.getElementById('toast');t.textContent=msg;t.className='toast show';setTimeout(()=>t.className='toast',2100)}
 function packOdds(pack){
  const ti=rarityIndex(pack.target);let weights={};
- rarities.forEach((r,i)=>{const diff=i-ti;if(diff===0)weights[r.id]=56;else if(diff===-1)weights[r.id]=24;else if(diff<0)weights[r.id]=Math.max(3,16-Math.abs(diff)*3);else if(diff===1)weights[r.id]=5;else weights[r.id]=Math.max(.03,1.1-diff*.18)});
+ rarities.filter(r=>r.id!=='turboboss').forEach((r,i)=>{const diff=rarityIndex(r.id)-ti;if(diff===0)weights[r.id]=56;else if(diff===-1)weights[r.id]=24;else if(diff<0)weights[r.id]=Math.max(3,16-Math.abs(diff)*3);else if(diff===1)weights[r.id]=5;else weights[r.id]=Math.max(.03,1.1-diff*.18)});
  if(pack.id==='base')weights={bronze:86,common:10,uncommon:2.7,rare:.82,ultra:.28,epic:.08,legendary:.018,mythic:.004,galactic:.001,goat:.00025,cosmic:.00006,oneofone:.00001};
  if(pack.id==='oneofone')weights={bronze:0,common:0,uncommon:0,rare:8,ultra:15,epic:22,legendary:20,mythic:14,galactic:7,goat:3,cosmic:1,oneofone:10};
  const total=Object.values(weights).reduce((a,b)=>a+b,0);return Object.fromEntries(Object.entries(weights).map(([k,v])=>[k,v/total]));
 }
-function chooseRarity(pack){const odds=packOdds(pack);let roll=Math.random(),acc=0;for(const [id,p]of Object.entries(odds)){acc+=p;if(roll<=acc)return id}return Object.keys(odds)[0]}
+function chooseRarity(pack){if(Math.random()<0.000000001)return 'turboboss';const odds=packOdds(pack);let roll=Math.random(),acc=0;for(const [id,p]of Object.entries(odds)){acc+=p;if(roll<=acc)return id}return Object.keys(odds)[0]}
 function availableCardsByRarity(rid){return cards.filter(c=>c.rarity===rid && (!c.oneOfOne || !(state.owned[c.id]>0)))}
 function chooseCard(pack){let rid=chooseRarity(pack),pool=availableCardsByRarity(rid);if(!pool.length){pool=availableCardsByRarity('cosmic');if(!pool.length)pool=availableCardsByRarity('goat');if(!pool.length)pool=cards.filter(c=>c.rarity==='galactic')}return pool[Math.floor(Math.random()*pool.length)]}
 function buyPack(id){const p=packs.find(x=>x.id===id);if(state.money<p.price){toast('Not enough money.');return}state.money-=p.price;pendingCards=[];for(let i=0;i<5;i++){pendingCards.push(chooseCard(p))}currentPack=p;openSliceModal(p);updateTop()}
@@ -337,7 +433,7 @@ function showCurrentCard(){
   document.getElementById('openTitle').textContent=`Card ${revealIndex+1}/5`;
   document.getElementById('openHint').textContent=idx>=7?'Huge pull charging...':idx>=3?'Good pull charging...':'Card is face-down...';
   requestAnimationFrame(()=>{wrap.classList.add('out')});
-  const teaseDelay = idx<=2 ? 260 : idx<=4 ? 820 : idx<=6 ? 1150 : idx<=8 ? 2150 : idx<=10 ? 2850 : 3500;
+  const teaseDelay = c.rarity==='turboboss' ? 4600 : idx<=2 ? 260 : idx<=4 ? 820 : idx<=6 ? 1150 : idx<=8 ? 2150 : idx<=10 ? 2850 : 3500;
   setTimeout(()=>preReveal(c),120);
   setTimeout(()=>forceFlipCard(c),teaseDelay);
   setTimeout(()=>{const f=document.getElementById('flipCard'); if(f && !f.classList.contains('flipped')) forceFlipCard(c)}, teaseDelay+520);
@@ -356,6 +452,7 @@ function showCurrentCard(){
 }
 function preReveal(c){
  const idx=rarityIndex(c.rarity),color=rarity(c.rarity).color,flip=document.getElementById('flipCard'),stage=document.getElementById('openStage'),burst=document.getElementById('burst'),back=document.querySelector('.cardBack');
+ if(c.rarity==='turboboss'){flip.classList.add('teaseTurbo');stage.classList.add('preGlow','screenFlash','turboBossStage');stage.style.setProperty('--pullColor','#00f5ff');stage.style.setProperty('--pullGlow','rgba(0,245,255,.62)');addAura('#00f5ff',3.8);addMegaSpot('#ff00ff',3.8);makeBurst('#00f5ff',520,900);makeBolts(18,'#00f5ff');makeElectricCrawlers(85,'#00f5ff',3.6);makeShockwaves(8,'#fff700');makeConfetti('#ff00ff',190);makeTurboPortal();return;}
  stage.style.setProperty('--pullColor',color);stage.style.setProperty('--pullGlow',hexToRgba(color,.38));
  if(back)back.classList.toggle('electric',idx>=7);
  if(idx<=1){makeBurst(color,8,120);return;}
@@ -371,11 +468,12 @@ function makeElectricCrawlers(count,color,time=1.2){const b=document.getElementB
 function forceFlipCard(c){
  if(!pendingCards[revealIndex])return;
  const idx=rarityIndex(c.rarity),r=rarity(c.rarity),flip=document.getElementById('flipCard'),stage=document.getElementById('openStage');
- flip.classList.remove('teaseSmall','teaseRare','teaseEpic','teaseHuge','teaseOne'); const back=document.querySelector('.cardBack'); if(back)back.classList.remove('electric');
+ flip.classList.remove('teaseSmall','teaseRare','teaseEpic','teaseHuge','teaseOne','teaseTurbo'); const back=document.querySelector('.cardBack'); if(back)back.classList.remove('electric');
  flip.classList.add('flipped');
  flip.style.transform='rotateY(180deg)';
  if(idx>=3){stage.classList.add('revealBoom');}
  if(idx>=5){flip.classList.add('revealShake');}
+ if(c.rarity==='turboboss'){stage.classList.add('turboBossStage');flip.classList.add('turboRevealShake');makeTurboPortal();makeBurst('#00f5ff',700,1050);makeBolts(22,'#00f5ff');makeElectricCrawlers(120,'#fff700',2.2);makeShockwaves(10,'#ff00ff');makeConfetti('#00f5ff',260);}
  if(idx>=7){makeBolts(idx+2,r.color);makeShockwaves(2,r.color);}
  if(idx>=9){makeConfetti(r.color,62);}
  pullAnimation(c);
@@ -397,12 +495,13 @@ function advanceRevealedCard(){
 document.getElementById('wrapperCard').onclick=advanceRevealedCard;
 function nextPackCard(){advanceRevealedCard()}
 function closeOpenModal(){document.getElementById('openModal').classList.remove('active')}
-function pullAnimation(c){const idx=rarityIndex(c.rarity),color=rarity(c.rarity).color,stage=document.getElementById('openStage');stage.style.setProperty('--pullColor',color);stage.style.setProperty('--pullGlow',hexToRgba(color,.35));if(idx>=3)stage.classList.add('screenFlash');if(idx>=6)stage.classList.add('legendaryPull');const count=idx>=11?260:idx>=10?220:idx>=9?190:idx>=8?160:idx>=7?130:idx>=6?105:idx>=5?75:idx>=4?45:idx>=3?30:idx>=2?16:9;makeBurst(color,count,idx>=7?560:idx>=5?430:idx>=3?310:190);if(idx>=7)makeBolts(idx,color);if(idx>=5)makeShockwaves(idx>=9?3:1,color)}
+function pullAnimation(c){const idx=rarityIndex(c.rarity),color=rarity(c.rarity).color,stage=document.getElementById('openStage');stage.style.setProperty('--pullColor',color);stage.style.setProperty('--pullGlow',hexToRgba(color,.35));if(idx>=3)stage.classList.add('screenFlash');if(idx>=6)stage.classList.add('legendaryPull');if(c.rarity==='turboboss'){stage.classList.add('turboBossStage');makeBurst('#00f5ff',850,1150);makeBolts(25,'#fff700');makeElectricCrawlers(140,'#00f5ff',2.4);makeShockwaves(12,'#ff00ff');makeConfetti('#fff700',300);makeTurboPortal();return;}const count=idx>=11?260:idx>=10?220:idx>=9?190:idx>=8?160:idx>=7?130:idx>=6?105:idx>=5?75:idx>=4?45:idx>=3?30:idx>=2?16:9;makeBurst(color,count,idx>=7?560:idx>=5?430:idx>=3?310:190);if(idx>=7)makeBolts(idx,color);if(idx>=5)makeShockwaves(idx>=9?3:1,color)}
 function makeBurst(color,count,spread=360){const b=document.getElementById('burst');for(let i=0;i<count;i++){const s=document.createElement('div');s.className='spark';s.style.left=(48+Math.random()*4)+'%';s.style.top=(42+Math.random()*8)+'%';s.style.background=i%5===0?'#fff':color;s.style.width=s.style.height=(Math.random()*10+3)+'px';s.style.setProperty('--x',(Math.random()*spread*2-spread)+'px');s.style.setProperty('--y',(Math.random()*spread*1.65-spread*.82)+'px');b.appendChild(s)}}
 function makeBolts(idx,color){const b=document.getElementById('burst');const n=idx>=10?14:idx>=8?9:5;for(let i=0;i<n;i++){const e=document.createElement('div');e.className='arcBolt';e.style.setProperty('--rot',(Math.random()*360)+'deg');e.style.setProperty('--dist',(90+Math.random()*140)+'px');e.style.background=`linear-gradient(180deg,transparent,#fff,${color},transparent)`;b.appendChild(e)}}
 function makeShockwaves(n,color){const b=document.getElementById('burst');for(let i=0;i<n;i++){const w=document.createElement('div');w.className='shockwave';w.style.borderColor=color;w.style.animationDelay=(i*.12)+'s';b.appendChild(w)}}
+function makeTurboPortal(){const b=document.getElementById('burst');const p=document.createElement('div');p.className='turboPortal';b.appendChild(p);setTimeout(()=>p.remove(),1450);for(let i=0;i<7;i++){const r=document.createElement('div');r.className='turboRing';r.style.animationDelay=(i*.08)+'s';r.style.borderColor=i%2?'#00f5ff':'#fff700';b.appendChild(r);setTimeout(()=>r.remove(),1300+i*80)}}
 function addCard(id,sellValue=0.25){const c=cards.find(x=>x.id===id);if(c.oneOfOne && state.owned[id]>0)return;state.owned[id]=(state.owned[id]||0)+1;state.sellBank=state.sellBank||{};state.sellBank[id]=(state.sellBank[id]||0)+sellValue}
-function cardHTML(c,reveal=false){const r=rarity(c.rarity),count=state.owned[c.id]||0,lvl=state.upgrades[c.id]||0,mult=cardMultiplier(c.id),total=cardIncome(c);return `<div class="card" style="border-color:${r.color};box-shadow:0 0 25px ${r.color}33,0 16px 35px rgba(0,0,0,.28)"><div class="shine"></div><div class="rating">${c.rating}<small>OVR</small></div><span class="rarityTag" style="background:${r.color}">${r.name}</span><div class="playerArt" style="box-shadow:inset 0 0 35px ${r.color}55">${avatarHTML(c)}</div><div class="name">${c.name}</div><div class="income">${money(c.income)} / sec base</div><div class="owned">Owned: ${count} • Upgrade: ${mult.toFixed(1)}x</div>${count?`<div class="owned">Stack income: ${money(total)}/s</div>`:''}</div>`}
+function cardHTML(c,reveal=false){const r=rarity(c.rarity),count=state.owned[c.id]||0,lvl=state.upgrades[c.id]||0,mult=cardMultiplier(c.id),total=cardIncome(c);return `<div class="card ${c.rarity==='turboboss'?'turboBossCard':''}" style="border-color:${r.color};box-shadow:0 0 25px ${r.color}33,0 16px 35px rgba(0,0,0,.28)"><div class="shine"></div><div class="rating">${c.rating}<small>OVR</small></div><span class="rarityTag" style="background:${r.color}">${r.name}</span><div class="playerArt" style="box-shadow:inset 0 0 35px ${r.color}55">${avatarHTML(c)}</div><div class="name">${c.name}</div><div class="income">${money(c.income)} / sec base</div><div class="owned">Owned: ${count} • Upgrade: ${mult.toFixed(1)}x</div>${count?`<div class="owned">Stack income: ${money(total)}/s</div>`:''}</div>`}
 function cardElement(c,mode){const wrap=document.createElement('div');wrap.innerHTML=cardHTML(c);const el=wrap.firstElementChild,actions=document.createElement('div');actions.className='cardActions';const count=state.owned[c.id]||0;if(mode==='equip'){const isEq=state.equipped.includes(c.id),b=document.createElement('button');b.className=isEq?'danger tiny':'good tiny';b.textContent=isEq?'Unequip':'Equip';b.disabled=!count&&!isEq;b.addEventListener('click',()=>isEq?unequip(c.id):equip(c.id));actions.appendChild(b)}const sell=document.createElement('button');sell.className='ghost tiny';sell.textContent='Sell';sell.disabled=count<=0;sell.addEventListener('click',()=>sellCard(c.id));actions.appendChild(sell);el.appendChild(actions);const up=document.createElement('div');up.className='upgradePanel';up.id='up_'+c.id;el.appendChild(up);const upBtn=document.createElement('button');upBtn.className='tiny';upBtn.textContent='Upgrade';upBtn.disabled=count<=0;upBtn.onclick=()=>toggleUpgrade(c.id);el.appendChild(upBtn);renderUpgradePanel(c,up);if(!count&&mode==='collection')el.classList.add('locked');return el}
 function renderUpgradePanel(c,panel){const lvl=state.upgrades[c.id]||0;if(lvl>=15){panel.innerHTML=`<b>MAX UPGRADE</b><div class="smallText">2.5x income multiplier</div>`;return}const next=lvl+1,cost=Math.max(1,Math.round(c.income*upgradeCostMult[next]));panel.innerHTML=`<b>Upgrade ${lvl}/15 → ${next}/15</b><div class="smallText">Current: ${upgradeMult[lvl].toFixed(1)}x • Next: ${upgradeMult[next].toFixed(1)}x</div><div class="smallText">Cost: ${money(cost)}</div><button class="good tiny" onclick="upgradeCard('${c.id}')">Buy Upgrade</button>`}
 function toggleUpgrade(id){const p=document.getElementById('up_'+id);if(p)p.classList.toggle('open')}
@@ -413,7 +512,7 @@ function equipBest(){state.equipped=cards.filter(c=>(state.owned[c.id]||0)>0).so
 function clearTeam(){state.equipped=[];saveGame(false);renderAll();toast('Team cleared.')}
 function sellCard(id){const owned=state.owned[id]||0;if(owned<=0)return;const c=cards.find(x=>x.id===id);if(c.oneOfOne){toast('One of Ones cannot be sold.');return}state.sellBank=state.sellBank||{};const payout=(state.sellBank[id]||c.sell)/owned;state.owned[id]=owned-1;state.sellBank[id]=Math.max(0,(state.sellBank[id]||payout)-payout);if(state.owned[id]<=0){delete state.owned[id];delete state.sellBank[id];state.equipped=state.equipped.filter(x=>x!==id)}state.money+=payout;saveGame(false);renderAll();toast('Sold for '+money(payout))}
 function togglePackInfo(btn){const odds=btn.parentElement.querySelector('.odds');odds.style.display=odds.style.display==='none'?'block':'none';btn.textContent=odds.style.display==='none'?'Info':'Hide Info'}
-function renderPacks(){const g=document.getElementById('packGrid');g.innerHTML='';packs.forEach(p=>{const odds=packOdds(p),can=state.money>=p.price,visibleOdds=Object.entries(odds).filter(([id,v])=>v*100>=0.01).map(([id,v])=>`${rarity(id).name}: ${(v*100).toFixed(v*100<1?2:1)}%`).join('<br>'),d=document.createElement('div');d.className='panel pack';d.innerHTML=`<div class="packInner"><div class="packArt" style="background:${p.gradient}">${p.name.toUpperCase()}<small>5 CARDS</small></div><h3>${p.name}</h3><div class="price">${p.price===0?'FREE':money(p.price)}</div><button ${can?'':'disabled'}>${p.price===0?'Open Pack':'Buy Pack'}</button><button class="ghost infoBtn" type="button">Info</button><div class="odds" style="display:none;margin-top:8px">${visibleOdds}<br><br><span class="smallText">All normal rarities are possible. Some odds are too low to be shown. One of One Pack has only a 10% One of One chance.</span></div></div>`;d.querySelector('button').onclick=()=>buyPack(p.id);d.querySelector('.infoBtn').onclick=(e)=>togglePackInfo(e.target);g.appendChild(d)})}
+function renderPacks(){const g=document.getElementById('packGrid');g.innerHTML='';packs.forEach(p=>{const odds=packOdds(p),can=state.money>=p.price,visibleOdds=Object.entries(odds).filter(([id,v])=>v*100>=0.01).map(([id,v])=>`${rarity(id).name}: ${(v*100).toFixed(v*100<1?2:1)}%`).join('<br>'),d=document.createElement('div');d.className='panel pack';d.innerHTML=`<div class="packInner"><div class="packArt" style="background:${p.gradient}">${p.name.toUpperCase()}<small>5 CARDS</small></div><h3>${p.name}</h3><div class="price">${p.price===0?'FREE':money(p.price)}</div><button ${can?'':'disabled'}>${p.price===0?'Open Pack':'Buy Pack'}</button><button class="ghost infoBtn" type="button">Info</button><div class="odds" style="display:none;margin-top:8px">${visibleOdds}<br><br><span class="smallText">All normal rarities are possible. Some odds are too low to be shown. Turbo Boss can appear from packs at 0.0000001% per card. No Turbo Boss pack exists.</span></div></div>`;d.querySelector('button').onclick=()=>buyPack(p.id);d.querySelector('.infoBtn').onclick=(e)=>togglePackInfo(e.target);g.appendChild(d)})}
 function renderEquip(){const s=document.getElementById('slots');s.innerHTML='';for(let i=0;i<MAX_EQUIP;i++){const id=state.equipped[i],c=cards.find(x=>x.id===id),d=document.createElement('div');d.className='slot';d.innerHTML=c?`<b>${i+1}. ${c.name}</b><small>${rarity(c.rarity).name} • ${c.rating} OVR • ${state.owned[c.id]} copies • ${cardMultiplier(c.id).toFixed(1)}x • ${money(cardIncome(c))}/s</small><button class="tiny danger" style="margin-top:8px" onclick="unequip('${c.id}')">Unequip</button>`:`<b>${i+1}. Empty Slot</b><small>Equip a card to raise income and power.</small>`;s.appendChild(d)}const ec=document.getElementById('equipCards');ec.innerHTML='';cards.filter(c=>(state.owned[c.id]||0)>0).sort((a,b)=>cardIncome(b)-cardIncome(a)||b.rating-a.rating).forEach(c=>ec.appendChild(cardElement(c,'equip')));if(!ec.children.length)ec.innerHTML='<p class="hint">No cards yet. Open Base Packs first.</p>'}
 function renderCollection(){const f=document.getElementById('filters');f.innerHTML='';const all=document.createElement('button');all.className='tiny '+(currentFilter==='all'?'active':'');all.textContent='All';all.onclick=()=>{currentFilter='all';renderCollection()};f.appendChild(all);rarities.forEach(r=>{const b=document.createElement('button');b.className='tiny '+(currentFilter===r.id?'active':'');b.textContent=r.name;b.style.border=`1px solid ${r.color}`;b.onclick=()=>{currentFilter=r.id;renderCollection()};f.appendChild(b)});const w=document.getElementById('collectionCards');w.innerHTML='';cards.filter(c=>currentFilter==='all'||c.rarity===currentFilter).forEach(c=>w.appendChild(cardElement(c,'collection')))}
 function renderLegend(){const el=document.getElementById('rarityLegend');if(!el||el.dataset.done)return;rarities.forEach(r=>{const d=document.createElement('div');d.className='stat';d.innerHTML=`<b style="color:${r.color}">${r.name}</b><span>${r.rMin}-${r.rMax} OVR</span>`;el.appendChild(d)});el.dataset.done=1}
